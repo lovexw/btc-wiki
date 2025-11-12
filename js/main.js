@@ -1,3 +1,6 @@
+// 页面加载状态标志
+let isLoadingPage = false;
+
 // 切换导航栏展开/收起
 function toggleNav() {
     const nav = document.getElementById('floatingNav');
@@ -17,17 +20,33 @@ function updateNavActive(pageName) {
 
 // 页面加载函数
 function loadPage(pageName) {
+    // 防止重复加载
+    if (isLoadingPage) {
+        return;
+    }
+    isLoadingPage = true;
+    
     const contentSection = document.getElementById('content');
-    contentSection.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>';
+    const topicsSection = document.querySelector('.topics');
+    
+    // 添加淡出效果
+    contentSection.classList.add('fade-out');
+    contentSection.classList.remove('fade-in');
     
     // 更新导航栏活动状态
     updateNavActive(pageName);
     
-    // 滚动到页面顶部
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    // 模拟加载页面内容
+    // 等待淡出动画完成后加载内容
     setTimeout(() => {
+        // 隐藏主题卡片区域
+        if (topicsSection) {
+            topicsSection.style.display = 'none';
+        }
+        
+        // 显示加载状态
+        contentSection.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>';
+        
+        // 加载页面内容
         fetch(`pages/${pageName}.html`)
             .then(response => {
                 if (!response.ok) {
@@ -37,29 +56,85 @@ function loadPage(pageName) {
             })
             .then(html => {
                 contentSection.innerHTML = html;
+                
+                // 移除淡出类，添加淡入类
+                contentSection.classList.remove('fade-out');
+                contentSection.classList.add('fade-in');
+                
+                // 平滑滚动到内容区域顶部
+                setTimeout(() => {
+                    const navbarHeight = document.querySelector('.navbar')?.offsetHeight || 0;
+                    const targetPosition = contentSection.offsetTop - navbarHeight - 20;
+                    window.scrollTo({ 
+                        top: targetPosition, 
+                        behavior: 'smooth' 
+                    });
+                }, 100);
+                
                 // 重新初始化代码高亮或其他功能
                 initPageFeatures();
+                
+                // 重置加载状态
+                isLoadingPage = false;
             })
             .catch(error => {
                 contentSection.innerHTML = `
                     <div class="page-content">
                         <h2>页面加载失败</h2>
                         <p>抱歉，无法加载该页面内容。</p>
-                        <button class="back-button" onclick="location.reload()">返回首页</button>
+                        <button class="back-button" onclick="goHome()">返回首页</button>
                     </div>
                 `;
+                contentSection.classList.remove('fade-out');
+                contentSection.classList.add('fade-in');
+                
+                // 重置加载状态
+                isLoadingPage = false;
             });
     }, 300);
 }
 
 // 返回首页
 function goHome() {
+    // 防止重复加载
+    if (isLoadingPage) {
+        return;
+    }
+    isLoadingPage = true;
+    
+    const contentSection = document.getElementById('content');
+    const topicsSection = document.querySelector('.topics');
+    
+    // 添加淡出效果
+    contentSection.classList.add('fade-out');
+    contentSection.classList.remove('fade-in');
+    
     // 清除所有导航项的活动状态
     const navItems = document.querySelectorAll('.nav-item a');
     navItems.forEach(item => {
         item.classList.remove('active');
     });
-    location.reload();
+    
+    // 等待淡出动画完成
+    setTimeout(() => {
+        // 清空内容区域
+        contentSection.innerHTML = '';
+        
+        // 显示主题卡片区域
+        if (topicsSection) {
+            topicsSection.style.display = 'block';
+        }
+        
+        // 移除淡出类，添加淡入类
+        contentSection.classList.remove('fade-out');
+        contentSection.classList.add('fade-in');
+        
+        // 平滑滚动到顶部
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // 重置加载状态
+        isLoadingPage = false;
+    }, 300);
 }
 
 // 搜索功能
