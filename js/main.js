@@ -23,8 +23,8 @@ function loadPage(pageName) {
     // 更新导航栏活动状态
     updateNavActive(pageName);
     
-    // 滚动到内容区域
-    contentSection.scrollIntoView({ behavior: 'smooth' });
+    // 滚动到页面顶部
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     
     // 模拟加载页面内容
     setTimeout(() => {
