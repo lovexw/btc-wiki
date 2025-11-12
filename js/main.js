@@ -1,7 +1,27 @@
+// 切换导航栏展开/收起
+function toggleNav() {
+    const nav = document.getElementById('floatingNav');
+    nav.classList.toggle('collapsed');
+}
+
+// 更新导航栏活动状态
+function updateNavActive(pageName) {
+    const navItems = document.querySelectorAll('.nav-item a');
+    navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.page === pageName) {
+            item.classList.add('active');
+        }
+    });
+}
+
 // 页面加载函数
 function loadPage(pageName) {
     const contentSection = document.getElementById('content');
     contentSection.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>';
+    
+    // 更新导航栏活动状态
+    updateNavActive(pageName);
     
     // 滚动到内容区域
     contentSection.scrollIntoView({ behavior: 'smooth' });
@@ -34,6 +54,11 @@ function loadPage(pageName) {
 
 // 返回首页
 function goHome() {
+    // 清除所有导航项的活动状态
+    const navItems = document.querySelectorAll('.nav-item a');
+    navItems.forEach(item => {
+        item.classList.remove('active');
+    });
     location.reload();
 }
 

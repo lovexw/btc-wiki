@@ -22,6 +22,87 @@
         </div>
     </nav>
 
+    <aside class="floating-nav" id="floatingNav">
+        <button class="nav-toggle" onclick="toggleNav()" title="展开/收起导航">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-title">主题导航</div>
+        <ul class="nav-items">
+            <li class="nav-item">
+                <a href="#" onclick="loadPage('basics'); return false;" data-page="basics">
+                    <i class="fas fa-book"></i>
+                    <span>比特币基础</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" onclick="loadPage('blockchain'); return false;" data-page="blockchain">
+                    <i class="fas fa-cubes"></i>
+                    <span>区块链技术</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" onclick="loadPage('cryptography'); return false;" data-page="cryptography">
+                    <i class="fas fa-lock"></i>
+                    <span>密码学原理</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" onclick="loadPage('mining'); return false;" data-page="mining">
+                    <i class="fas fa-hammer"></i>
+                    <span>挖矿机制</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" onclick="loadPage('transactions'); return false;" data-page="transactions">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>交易系统</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" onclick="loadPage('network'); return false;" data-page="network">
+                    <i class="fas fa-network-wired"></i>
+                    <span>P2P网络</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" onclick="loadPage('consensus'); return false;" data-page="consensus">
+                    <i class="fas fa-handshake"></i>
+                    <span>共识机制</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" onclick="loadPage('script'); return false;" data-page="script">
+                    <i class="fas fa-code"></i>
+                    <span>脚本系统</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" onclick="loadPage('wallet'); return false;" data-page="wallet">
+                    <i class="fas fa-wallet"></i>
+                    <span>钱包技术</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" onclick="loadPage('security'); return false;" data-page="security">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>安全性分析</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" onclick="loadPage('advanced'); return false;" data-page="advanced">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>高级主题</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" onclick="loadPage('implementation'); return false;" data-page="implementation">
+                    <i class="fas fa-laptop-code"></i>
+                    <span>实现细节</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
     <header class="hero" id="home">
         <div class="container">
             <h1>比特币技术百科</h1>
