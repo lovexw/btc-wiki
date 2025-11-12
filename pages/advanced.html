@@ -1,0 +1,256 @@
+<div class="page-content">
+    <button class="back-button" onclick="goHome()"><i class="fas fa-arrow-left"></i> 返回首页</button>
+    
+    <h2>比特币高级主题</h2>
+    
+    <h3>1. 隔离见证（SegWit）</h3>
+    
+    <h4>1.1 什么是SegWit？</h4>
+    <p>SegWit（Segregated Witness）是2017年激活的重大升级，将签名数据（witness）从交易中分离。</p>
+    
+    <h4>1.2 解决的问题</h4>
+    
+    <p><strong>① 交易延展性</strong></p>
+    <pre><code>问题：签名可被第三方修改，导致交易ID改变
+影响：破坏依赖交易ID的协议（如闪电网络）
+解决：将签名移出交易ID计算范围</code></pre>
+    
+    <p><strong>② 区块容量</strong></p>
+    <pre><code>原先：1MB硬限制
+SegWit：引入权重概念
+- 非witness数据：4 weight units/byte
+- witness数据：1 weight unit/byte
+- 最大：4MB weight units
+- 实际：约1.8-2.2MB等效大小</code></pre>
+    
+    <h4>1.3 地址格式</h4>
+    <ul>
+        <li><strong>P2WPKH</strong>：原生SegWit，bc1q开头，Bech32编码</li>
+        <li><strong>P2SH-wrapped</strong>：兼容SegWit，3开头，用于兼容性</li>
+    </ul>
+    
+    <h4>1.4 优势</h4>
+    <ul>
+        <li>手续费降低约40%</li>
+        <li>交易容量增加</li>
+        <li>支持闪电网络</li>
+        <li>脚本版本控制</li>
+    </ul>
+    
+    <h3>2. 闪电网络（Lightning Network）</h3>
+    
+    <h4>2.1 原理</h4>
+    <p>闪电网络是比特币的<strong>第二层（Layer 2）</strong>解决方案，通过链下支付通道实现即时、低成本交易。</p>
+    
+    <h4>2.2 支付通道</h4>
+    
+    <pre><code>Alice和Bob开通道：
+
+1. 开通道（链上）
+   - Alice和Bob各锁定5 BTC到多签地址
+   - 总共10 BTC在通道中
+
+2. 链下交易
+   - Alice付Bob 1 BTC：更新余额（Alice 4, Bob 6）
+   - Bob付Alice 0.5 BTC：更新余额（Alice 4.5, Bob 5.5）
+   - 无限次交易，瞬间完成，无手续费
+   - 双方签名新的余额状态
+
+3. 关闭通道（链上）
+   - 广播最终余额状态
+   - Alice提取4.5 BTC，Bob提取5.5 BTC
+
+整个过程只有2笔链上交易（开通道、关闭通道）</code></pre>
+    
+    <h4>2.3 路由支付</h4>
+    <p>无需直接通道也可支付：</p>
+    <pre><code>Alice → Bob → Carol → Dave
+
+Alice想付Dave 1 BTC：
+1. 找到路由：Alice-Bob-Carol-Dave
+2. 使用HTLC（哈希时间锁）确保安全
+3. Dave收到钱，释放原像
+4. 原像逐级返回，完成支付
+5. 每个节点收取少量路由费</code></pre>
+    
+    <h4>2.4 优势与挑战</h4>
+    
+    <p><strong>优势：</strong></p>
+    <ul>
+        <li>即时确认（毫秒级）</li>
+        <li>超低手续费（几聪）</li>
+        <li>无限吞吐量</li>
+        <li>增强隐私</li>
+    </ul>
+    
+    <p><strong>挑战：</strong></p>
+    <ul>
+        <li>需要在线</li>
+        <li>通道流动性管理</li>
+        <li>路由复杂性</li>
+        <li>用户体验待改进</li>
+    </ul>
+    
+    <h3>3. Taproot升级</h3>
+    
+    <h4>3.1 Taproot是什么？</h4>
+    <p>2021年11月激活的重大升级，由三个BIP组成：</p>
+    <ul>
+        <li><strong>BIP340</strong>：Schnorr签名</li>
+        <li><strong>BIP341</strong>：Taproot</li>
+        <li><strong>BIP342</strong>：Tapscript</li>
+    </ul>
+    
+    <h4>3.2 Schnorr签名</h4>
+    
+    <p><strong>优势：</strong></p>
+    <ul>
+        <li><strong>签名聚合</strong>：多个签名合并成一个</li>
+        <li><strong>更简洁</strong>：数学上更优雅</li>
+        <li><strong>隐私增强</strong>：多签和单签无法区分</li>
+        <li><strong>更高效</strong>：验证更快</li>
+    </ul>
+    
+    <pre><code>// ECDSA多签（2-of-3）
+大小：约300 bytes
+明显是多签
+
+// Schnorr多签（2-of-3）
+大小：约64 bytes
+看起来像单签</code></pre>
+    
+    <h4>3.3 MAST（默克尔抽象语法树）</h4>
+    
+    <p>允许复杂脚本只暴露被执行的分支：</p>
+    
+    <pre><code>场景：复杂智能合约有100个条件分支
+
+传统方式：
+- 所有100个分支都在链上
+- 占用大量空间
+- 暴露所有条件
+
+MAST方式：
+- 100个分支组织成默克尔树
+- 只暴露被执行的1个分支
+- 其他99个分支保密
+- 节省空间和增强隐私</code></pre>
+    
+    <h4>3.4 好处</h4>
+    <ul>
+        <li>隐私提升</li>
+        <li>手续费降低</li>
+        <li>智能合约更强大</li>
+        <li>为未来升级铺路</li>
+    </ul>
+    
+    <h3>4. 侧链（Sidechains）</h3>
+    
+    <h4>4.1 概念</h4>
+    <p>侧链是独立的区块链，与比特币主链双向锚定，允许比特币在链间转移。</p>
+    
+    <h4>4.2 双向锚定</h4>
+    <pre><code>转移到侧链：
+1. 在主链锁定BTC
+2. 提供锁定证明
+3. 在侧链铸造等量币
+
+转移回主链：
+1. 在侧链销毁币
+2. 提供销毁证明
+3. 在主链解锁BTC</code></pre>
+    
+    <h4>4.3 著名侧链</h4>
+    <ul>
+        <li><strong>Liquid</strong>：快速结算（Blockstream）</li>
+        <li><strong>RSK</strong>：智能合约平台</li>
+        <li><strong>Stacks</strong>：智能合约和DeFi</li>
+    </ul>
+    
+    <h3>5. RGB协议</h3>
+    
+    <h4>5.1 客户端验证</h4>
+    <p>RGB是在比特币上发行资产的协议，使用<strong>客户端验证</strong>模式：</p>
+    
+    <ul>
+        <li>资产数据不在链上</li>
+        <li>只在链上提交承诺（commitment）</li>
+        <li>用户私下验证资产历史</li>
+        <li>极高的可扩展性和隐私性</li>
+    </ul>
+    
+    <h4>5.2 应用</h4>
+    <ul>
+        <li>发行代币</li>
+        <li>NFT</li>
+        <li>稳定币</li>
+        <li>复杂金融合约</li>
+    </ul>
+    
+    <h3>6. Drivechain</h3>
+    
+    <p>提案允许比特币矿工管理侧链，实现真正的双向锚定，但争议较大。</p>
+    
+    <h3>7. Covenants</h3>
+    
+    <p>限制比特币未来如何被花费的脚本增强，可实现：</p>
+    <ul>
+        <li>金库（Vaults）</li>
+        <li>限制取款速率</li>
+        <li>更复杂的智能合约</li>
+    </ul>
+    
+    <p>提案：OP_CHECKTEMPLATEVERIFY（BIP119）</p>
+    
+    <h3>8. 跨链技术</h3>
+    
+    <h4>8.1 原子交换</h4>
+    <p>无需信任第三方，直接在不同区块链间交换币。</p>
+    
+    <h4>8.2 包装比特币（WBTC）</h4>
+    <p>在以太坊等链上1:1代表比特币，但需要托管人。</p>
+    
+    <h3>9. 时间戳服务</h3>
+    
+    <p>利用比特币区块链为文档提供不可篡改的时间证明：</p>
+    <ul>
+        <li>OpenTimestamps</li>
+        <li>OP_RETURN嵌入哈希</li>
+        <li>应用：版权、公证、审计</li>
+    </ul>
+    
+    <h3>10. 未来展望</h3>
+    
+    <h4>10.1 可能的升级</h4>
+    <ul>
+        <li><strong>交叉输入签名聚合</strong>：进一步压缩交易</li>
+        <li><strong>抗量子签名</strong>：应对量子威胁</li>
+        <li><strong>Covenant操作码</strong>：更强大的智能合约</li>
+        <li><strong>匿名签名</strong>：增强隐私</li>
+    </ul>
+    
+    <h4>10.2 Layer 2生态</h4>
+    <ul>
+        <li>闪电网络持续改进</li>
+        <li>RGB资产协议</li>
+        <li>状态通道</li>
+        <li>Rollup可能性</li>
+    </ul>
+    
+    <h3>11. 总结</h3>
+    
+    <div class="success-box">
+        <h4>核心要点</h4>
+        <ul>
+            <li><strong>SegWit</strong>：解决延展性，提升容量</li>
+            <li><strong>闪电网络</strong>：Layer 2扩容，即时支付</li>
+            <li><strong>Taproot</strong>：Schnorr签名，隐私和效率</li>
+            <li><strong>侧链</strong>：实验新功能，不影响主链</li>
+            <li><strong>持续创新</strong>：保守升级，向后兼容</li>
+        </ul>
+    </div>
+    
+    <p>比特币在保持核心价值（去中心化、安全性）的同时，通过Layer 2和谨慎的协议升级不断演进。</p>
+    
+    <button class="back-button" onclick="goHome()"><i class="fas fa-arrow-left"></i> 返回首页</button>
+</div>

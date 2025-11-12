@@ -1,0 +1,235 @@
+<div class="page-content">
+    <button class="back-button" onclick="goHome()"><i class="fas fa-arrow-left"></i> 返回首页</button>
+    
+    <h2>比特币安全性分析</h2>
+    
+    <h3>1. 安全模型概述</h3>
+    
+    <p>比特币的安全性基于<strong>密码学</strong>、<strong>博弈论</strong>和<strong>网络效应</strong>的结合。</p>
+    
+    <h3>2. 常见攻击类型</h3>
+    
+    <h4>2.1 私钥攻击</h4>
+    
+    <p><strong>① 暴力破解</strong></p>
+    <pre><code>私钥空间：2^256 ≈ 10^77
+
+对比：
+- 宇宙原子数：约10^80
+- 尝试所有私钥 = 比数宇宙原子还难
+
+结论：暴力破解不可行</code></pre>
+    
+    <p><strong>② 弱随机数生成</strong></p>
+    <ul>
+        <li>使用可预测的随机数</li>
+        <li>重用签名中的k值</li>
+        <li>防御：使用密码学安全的随机数生成器</li>
+    </ul>
+    
+    <p><strong>③ 侧信道攻击</strong></p>
+    <ul>
+        <li>通过功耗、时间、电磁辐射推测私钥</li>
+        <li>硬件钱包有防护措施</li>
+    </ul>
+    
+    <h4>2.2 网络攻击</h4>
+    
+    <p><strong>① 51%攻击</strong></p>
+    <pre><code>能力：
+- 双重支付
+- 审查交易
+- 自私挖矿
+
+限制：
+- 无法偷币
+- 无法改规则
+- 成本极高（数十亿美元）</code></pre>
+    
+    <p><strong>② Eclipse攻击</strong></p>
+    <ul>
+        <li>隔离受害节点</li>
+        <li>控制其所有连接</li>
+        <li>防御：多样化连接，使用Tor</li>
+    </ul>
+    
+    <p><strong>③ BGP劫持</strong></p>
+    <ul>
+        <li>网络层面拦截比特币流量</li>
+        <li>可能导致双花或分区</li>
+        <li>防御：FIBRE、卫星网络</li>
+    </ul>
+    
+    <h4>2.3 交易层攻击</h4>
+    
+    <p><strong>① 双重支付</strong></p>
+    <pre><code>场景：
+1. Alice支付Bob 1 BTC（交易A）
+2. Bob看到交易在内存池，发货
+3. Alice广播冲突交易（交易B），付给自己
+4. 如果B先被确认，A失效
+
+防御：等待足够确认（至少6个）</code></pre>
+    
+    <p><strong>② 交易延展性</strong></p>
+    <ul>
+        <li>修改交易ID而不改变实质内容</li>
+        <li>SegWit已解决此问题</li>
+    </ul>
+    
+    <p><strong>③ Dust攻击</strong></p>
+    <ul>
+        <li>发送大量小额UTXO</li>
+        <li>通过关联分析降低隐私</li>
+        <li>防御：不合并dust UTXO</li>
+    </ul>
+    
+    <h4>2.4 用户层攻击</h4>
+    
+    <p><strong>① 钓鱼攻击</strong></p>
+    <ul>
+        <li>假冒钱包网站</li>
+        <li>诱导输入助记词</li>
+        <li>防御：验证网址，书签官网</li>
+    </ul>
+    
+    <p><strong>② 恶意软件</strong></p>
+    <ul>
+        <li>键盘记录器窃取密钥</li>
+        <li>剪贴板劫持（替换地址）</li>
+        <li>防御：硬件钱包，定期扫毒</li>
+    </ul>
+    
+    <p><strong>③ 社会工程</strong></p>
+    <ul>
+        <li>假冒技术支持</li>
+        <li>投资诈骗</li>
+        <li>防御：Never trust, always verify</li>
+    </ul>
+    
+    <h3>3. 密码学安全</h3>
+    
+    <h4>3.1 哈希函数安全性</h4>
+    
+    <pre><code>SHA-256安全性：
+- 无已知碰撞
+- 原像攻击不可行
+- 预计安全至2030年代
+
+量子威胁：
+- Grover算法可减半安全位
+- 256位 → 128位有效安全性
+- 仍然足够安全</code></pre>
+    
+    <h4>3.2 椭圆曲线安全性</h4>
+    
+    <pre><code>secp256k1：
+- 256位私钥
+- 约128位经典安全性
+- Shor算法（量子）可破解
+
+量子威胁：
+- 需要数百万量子比特
+- 目前技术远未达到
+- 可升级到抗量子算法</code></pre>
+    
+    <h3>4. 最佳安全实践</h3>
+    
+    <div class="success-box">
+        <h4><i class="fas fa-check-circle"></i> 个人用户</h4>
+        <ul>
+            <li>使用硬件钱包存大额</li>
+            <li>备份助记词（多地点）</li>
+            <li>启用Passphrase</li>
+            <li>永不重用地址</li>
+            <li>验证接收地址（防恶意软件）</li>
+            <li>小额测试后再大额转账</li>
+            <li>不信任任何人要求私钥</li>
+        </ul>
+    </div>
+    
+    <div class="success-box">
+        <h4><i class="fas fa-check-circle"></i> 商家</h4>
+        <ul>
+            <li>等待6+确认</li>
+            <li>大额交易等待更多确认</li>
+            <li>使用支付处理器（BTCPay）</li>
+            <li>监控内存池双花</li>
+            <li>使用HD钱包，每次新地址</li>
+        </ul>
+    </div>
+    
+    <div class="success-box">
+        <h4><i class="fas fa-check-circle"></i> 交易所</h4>
+        <ul>
+            <li>多重签名（3-of-5或更高）</li>
+            <li>冷热钱包分离</li>
+            <li>定期安全审计</li>
+            <li>保险基金</li>
+            <li>提现白名单和延迟</li>
+        </ul>
+    </div>
+    
+    <h3>5. 未来威胁</h3>
+    
+    <h4>5.1 量子计算</h4>
+    
+    <pre><code>威胁评估：
+- 破解ECDSA需要大型量子计算机
+- 当前技术远未达到
+- 预计10-20年内仍安全
+
+应对方案：
+- 升级到抗量子签名（已有研究）
+- Taproot支持未来升级
+- 不重用地址减少暴露</code></pre>
+    
+    <h4>5.2 算力集中化</h4>
+    
+    <ul>
+        <li>几个大矿池控制大部分算力</li>
+        <li>可能串谋攻击</li>
+        <li>解决：Stratum V2去中心化，鼓励运行全节点</li>
+    </ul>
+    
+    <h3>6. 链上隐私</h3>
+    
+    <h4>6.1 隐私威胁</h4>
+    <ul>
+        <li>地址关联（UTXO聚类）</li>
+        <li>交易图分析</li>
+        <li>IP地址泄露</li>
+        <li>交易所KYC</li>
+    </ul>
+    
+    <h4>6.2 隐私增强</h4>
+    <ul>
+        <li><strong>CoinJoin</strong>：混币交易</li>
+        <li><strong>PayJoin</strong>：协作交易</li>
+        <li><strong>闪电网络</strong>：链下交易</li>
+        <li><strong>Tor</strong>：隐藏IP</li>
+        <li><strong>不重用地址</strong></li>
+    </ul>
+    
+    <h3>7. 总结</h3>
+    
+    <div class="warning-box">
+        <h4><i class="fas fa-shield-alt"></i> 安全金字塔</h4>
+        <p><strong>基础层：密码学</strong></p>
+        <ul><li>SHA-256、ECDSA提供数学安全</li></ul>
+        
+        <p><strong>协议层：共识机制</strong></p>
+        <ul><li>PoW、最长链规则防止攻击</li></ul>
+        
+        <p><strong>网络层：去中心化</strong></p>
+        <ul><li>P2P网络防单点故障</li></ul>
+        
+        <p><strong>经济层：激励机制</strong></p>
+        <ul><li>使攻击成本 > 收益</li></ul>
+        
+        <p><strong>用户层：最佳实践</strong></p>
+        <ul><li>个人安全习惯最关键</li></ul>
+    </div>
+    
+    <button class="back-button" onclick="goHome()"><i class="fas fa-arrow-left"></i> 返回首页</button>
+</div>
