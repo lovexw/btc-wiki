@@ -1,0 +1,264 @@
+<div class="page-content">
+    <button class="back-button" onclick="goHome()"><i class="fas fa-arrow-left"></i> 返回首页</button>
+    
+    <h2>比特币脚本系统</h2>
+    
+    <h3>1. Bitcoin Script简介</h3>
+    
+    <p>Bitcoin Script是一种<strong>基于栈的</strong>、<strong>图灵不完备的</strong>脚本语言，用于定义比特币的花费条件。</p>
+    
+    <div class="info-box">
+        <h4>为什么图灵不完备？</h4>
+        <ul>
+            <li>没有循环（防止无限执行）</li>
+            <li>执行时间可预测</li>
+            <li>更安全，减少攻击面</li>
+            <li>验证成本可控</li>
+        </ul>
+    </div>
+    
+    <h3>2. 脚本执行模型</h3>
+    
+    <h4>2.1 栈操作</h4>
+    <p>脚本使用栈（后进先出）处理数据：</p>
+    
+    <pre><code>示例脚本：2 3 OP_ADD 5 OP_EQUAL
+
+执行过程：
+1. 入栈 2:      [2]
+2. 入栈 3:      [2, 3]
+3. OP_ADD:      [5]         (2+3=5)
+4. 入栈 5:      [5, 5]
+5. OP_EQUAL:    [1]         (true)
+
+结果：栈顶为true，验证通过</code></pre>
+    
+    <h4>2.2 验证流程</h4>
+    
+    <pre><code>花费UTXO时：
+
+1. 连接脚本：
+   <scriptSig> <scriptPubKey>
+
+2. 执行scriptSig
+   - 通常压入签名和公钥
+
+3. 执行scriptPubKey
+   - 验证签名和公钥
+
+4. 检查结果
+   - 栈顶为true（非零）→ 验证通过
+   - 栈顶为false（零）→ 验证失败</code></pre>
+    
+    <h3>3. 常用操作码</h3>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>操作码</th>
+                    <th>功能</th>
+                    <th>示例</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>OP_DUP</td>
+                    <td>复制栈顶元素</td>
+                    <td>[5] → [5, 5]</td>
+                </tr>
+                <tr>
+                    <td>OP_HASH160</td>
+                    <td>RIPEMD160(SHA256(x))</td>
+                    <td>哈希栈顶元素</td>
+                </tr>
+                <tr>
+                    <td>OP_EQUAL</td>
+                    <td>比较栈顶两元素</td>
+                    <td>[5, 5] → [1]</td>
+                </tr>
+                <tr>
+                    <td>OP_EQUALVERIFY</td>
+                    <td>比较，不等则失败</td>
+                    <td>验证后弹出</td>
+                </tr>
+                <tr>
+                    <td>OP_CHECKSIG</td>
+                    <td>验证ECDSA签名</td>
+                    <td>核心验证操作</td>
+                </tr>
+                <tr>
+                    <td>OP_CHECKMULTISIG</td>
+                    <td>验证多重签名</td>
+                    <td>M-of-N签名</td>
+                </tr>
+                <tr>
+                    <td>OP_RETURN</td>
+                    <td>标记不可花费</td>
+                    <td>嵌入数据</td>
+                </tr>
+                <tr>
+                    <td>OP_CHECKLOCKTIMEVERIFY</td>
+                    <td>检查时间锁</td>
+                    <td>BIP65</td>
+                </tr>
+                <tr>
+                    <td>OP_CHECKSEQUENCEVERIFY</td>
+                    <td>检查序列锁</td>
+                    <td>BIP112</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <h3>4. 标准脚本类型</h3>
+    
+    <h4>4.1 P2PKH（Pay-to-PubKey-Hash）</h4>
+    
+    <pre><code>scriptPubKey:
+OP_DUP OP_HASH160 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
+
+scriptSig:
+<signature> <pubKey>
+
+完整验证：
+<sig> <pubKey> OP_DUP OP_HASH160 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
+
+步骤：
+1. 入栈 sig, pubKey
+2. OP_DUP: 复制pubKey
+3. OP_HASH160: 哈希pubKey
+4. 入栈 pubKeyHash
+5. OP_EQUALVERIFY: 比较哈希值
+6. OP_CHECKSIG: 验证签名</code></pre>
+    
+    <h4>4.2 P2PK（Pay-to-PubKey）</h4>
+    
+    <pre><code>scriptPubKey:
+<pubKey> OP_CHECKSIG
+
+scriptSig:
+<signature>
+
+特点：
+- 更早期的格式
+- 公钥直接暴露
+- 不常用</code></pre>
+    
+    <h4>4.3 P2SH（Pay-to-Script-Hash）</h4>
+    
+    <pre><code>scriptPubKey:
+OP_HASH160 <scriptHash> OP_EQUAL
+
+scriptSig:
+<data> ... <redeemScript>
+
+验证：
+1. 验证redeemScript的哈希正确
+2. 执行redeemScript
+3. 检查结果</code></pre>
+    
+    <h4>4.4 多重签名</h4>
+    
+    <pre><code>2-of-3多签脚本:
+
+scriptPubKey:
+OP_2 <pubKey1> <pubKey2> <pubKey3> OP_3 OP_CHECKMULTISIG
+
+scriptSig:
+OP_0 <sig1> <sig2>
+
+注意：OP_0是bug导致的必需占位符</code></pre>
+    
+    <h4>4.5 OP_RETURN（数据嵌入）</h4>
+    
+    <pre><code>scriptPubKey:
+OP_RETURN <data>
+
+特点：
+- 明确不可花费
+- 可嵌入80字节数据
+- 用于时间戳、证明等
+- 不增加UTXO集大小</code></pre>
+    
+    <h3>5. 时间锁</h3>
+    
+    <h4>5.1 绝对时间锁（CLTV）</h4>
+    
+    <pre><code>OP_CHECKLOCKTIMEVERIFY (BIP65)
+
+示例：锁定到区块高度700000
+scriptPubKey:
+<700000> OP_CHECKLOCKTIMEVERIFY OP_DROP
+<pubKeyHash> OP_CHECKSIG
+
+只有区块高度 >= 700000 才能花费</code></pre>
+    
+    <h4>5.2 相对时间锁（CSV）</h4>
+    
+    <pre><code>OP_CHECKSEQUENCEVERIFY (BIP112)
+
+示例：UTXO确认后144个区块才能花费
+scriptPubKey:
+<144> OP_CHECKSEQUENCEVERIFY OP_DROP
+<pubKeyHash> OP_CHECKSIG
+
+用于闪电网络的惩罚机制</code></pre>
+    
+    <h3>6. 高级应用</h3>
+    
+    <h4>6.1 哈希时间锁合约（HTLC）</h4>
+    
+    <pre><code>闪电网络的核心组件：
+
+OP_IF
+    OP_SHA256 <hash> OP_EQUALVERIFY
+    <alicePubKey> OP_CHECKSIG
+OP_ELSE
+    <locktime> OP_CHECKLOCKTIMEVERIFY OP_DROP
+    <bobPubKey> OP_CHECKSIG
+OP_ENDIF
+
+两种花费方式：
+1. Alice提供原像（secret）
+2. 超时后Bob可以取回</code></pre>
+    
+    <h4>6.2 原子交换</h4>
+    <p>使用HTLC在不同区块链之间交换币，无需信任第三方。</p>
+    
+    <h3>7. 限制与安全</h3>
+    
+    <h4>7.1 脚本限制</h4>
+    <ul>
+        <li>脚本大小 ≤ 10,000字节</li>
+        <li>栈元素 ≤ 520字节</li>
+        <li>操作数限制</li>
+        <li>禁用某些危险操作码</li>
+    </ul>
+    
+    <h4>7.2 标准性规则</h4>
+    <p>节点默认只转发标准交易类型，非标准交易虽然有效但难以传播。</p>
+    
+    <h3>8. SegWit与Taproot</h3>
+    
+    <h4>8.1 SegWit脚本</h4>
+    <p>将签名数据移到witness字段，减少交易延展性问题。</p>
+    
+    <h4>8.2 Taproot脚本</h4>
+    <p>使用Schnorr签名和MAST（默克尔抽象语法树），增强隐私和效率。</p>
+    
+    <h3>9. 总结</h3>
+    
+    <div class="success-box">
+        <h4>核心要点</h4>
+        <ul>
+            <li><strong>基于栈</strong>：后进先出的数据结构</li>
+            <li><strong>图灵不完备</strong>：安全且可预测</li>
+            <li><strong>灵活条件</strong>：支持多签、时间锁等</li>
+            <li><strong>验证逻辑</strong>：scriptSig + scriptPubKey</li>
+            <li><strong>持续演进</strong>：SegWit、Taproot增强功能</li>
+        </ul>
+    </div>
+    
+    <button class="back-button" onclick="goHome()"><i class="fas fa-arrow-left"></i> 返回首页</button>
+</div>

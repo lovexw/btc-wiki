@@ -1,0 +1,637 @@
+<div class="page-content">
+    <button class="back-button" onclick="goHome()"><i class="fas fa-arrow-left"></i> 返回首页</button>
+    
+    <h2>密码学原理详解</h2>
+    
+    <p>比特币的安全性完全建立在密码学基础之上。理解这些密码学概念是深入掌握比特币的关键。</p>
+    
+    <h3>1. 哈希函数（Hash Function）</h3>
+    
+    <h4>1.1 什么是哈希函数？</h4>
+    <p>哈希函数是一种数学函数，它可以将任意长度的输入数据转换成固定长度的输出（称为哈希值或摘要）。</p>
+    
+    <div class="info-box">
+        <h4>通俗理解</h4>
+        <p>想象一个神奇的搅拌机：</p>
+        <ul>
+            <li>你可以放入任何东西：一个字母、一本书、甚至整部电影</li>
+            <li>搅拌后总是输出固定大小的"果汁"</li>
+            <li>相同的输入总是产生相同的输出</li>
+            <li>但你无法从"果汁"还原出原材料</li>
+            <li>即使输入只改变一个字母，输出会完全不同</li>
+        </ul>
+    </div>
+    
+    <h4>1.2 密码学哈希函数的特性</h4>
+    
+    <p><strong>① 确定性（Deterministic）</strong></p>
+    <p>相同的输入永远产生相同的输出。</p>
+    <pre><code>Hash("hello") = 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824
+Hash("hello") = 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824  // 相同！</code></pre>
+    
+    <p><strong>② 快速计算（Fast Computation）</strong></p>
+    <p>计算哈希值的速度要快，否则系统效率低下。</p>
+    
+    <p><strong>③ 不可逆（Pre-image Resistance）</strong></p>
+    <p>给定哈希值h，在计算上不可行找到输入x使得Hash(x) = h。</p>
+    
+    <div class="example-box">
+        <h4>不可逆示例</h4>
+        <p>如果我告诉你一个哈希值：</p>
+        <code>9b71d224bd62f3785d96d46ad3ea3d73319bfbc2890caadae2dff72519673ca7</code>
+        <p>你几乎不可能反推出原始输入是什么（除非暴力尝试所有可能）。</p>
+        <p>答案是："hello"，但你无法从哈希值推算出来。</p>
+    </div>
+    
+    <p><strong>④ 雪崩效应（Avalanche Effect）</strong></p>
+    <p>输入的微小变化会导致输出的巨大变化。</p>
+    
+    <pre><code>Hash("hello") = 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824
+Hash("Hello") = 185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969
+
+// 只改变了一个字母的大小写，哈希值完全不同！</code></pre>
+    
+    <p><strong>⑤ 抗碰撞性（Collision Resistance）</strong></p>
+    <p>在计算上不可行找到两个不同的输入x和y，使得Hash(x) = Hash(y)。</p>
+    
+    <h4>1.3 SHA-256算法</h4>
+    <p>比特币使用<strong>SHA-256</strong>（Secure Hash Algorithm 256-bit）哈希函数，它是SHA-2家族的成员，由美国国家安全局（NSA）设计。</p>
+    
+    <div class="info-box">
+        <h4>SHA-256特点</h4>
+        <ul>
+            <li><strong>输出长度</strong>：256位（32字节，64个十六进制字符）</li>
+            <li><strong>安全性</strong>：目前没有已知的实用攻击方法</li>
+            <li><strong>碰撞概率</strong>：理论上1/(2^256) ≈ 1/10^77，比宇宙中原子数量还多</li>
+            <li><strong>速度</strong>：现代计算机可以每秒计算数百万次</li>
+        </ul>
+    </div>
+    
+    <h4>1.4 比特币中SHA-256的应用</h4>
+    
+    <p><strong>① 区块哈希</strong></p>
+    <p>区块头经过<strong>双重SHA-256</strong>计算得到区块哈希：</p>
+    <pre><code>blockHash = SHA256(SHA256(blockHeader))</code></pre>
+    
+    <div class="warning-box">
+        <h4>为什么双重哈希？</h4>
+        <p>使用双重SHA-256可以防止某些理论攻击（如长度扩展攻击），增强安全性。这是中本聪的设计选择，虽然对SHA-256来说可能不是必需的，但提供了额外的安全保障。</p>
+    </div>
+    
+    <p><strong>② 默克尔树</strong></p>
+    <p>交易通过SHA-256组织成默克尔树：</p>
+    <pre><code>// 计算两个子节点的父节点
+parentHash = SHA256(SHA256(leftHash + rightHash))</code></pre>
+    
+    <p><strong>③ 地址生成</strong></p>
+    <p>从公钥生成地址的过程中使用SHA-256（后面会详细讲）。</p>
+    
+    <p><strong>④ 工作量证明</strong></p>
+    <p>挖矿就是寻找一个Nonce，使得：</p>
+    <pre><code>SHA256(SHA256(blockHeader)) < target</code></pre>
+    
+    <h4>1.5 哈希计算示例</h4>
+    
+    <pre><code>// Python示例
+import hashlib
+
+def sha256(data):
+    return hashlib.sha256(data.encode()).hexdigest()
+
+def double_sha256(data):
+    first_hash = hashlib.sha256(data.encode()).digest()
+    second_hash = hashlib.sha256(first_hash).hexdigest()
+    return second_hash
+
+# 单次SHA-256
+print(sha256("Bitcoin"))
+# 输出: b4056df6691f8dc72e56302ddad345d65fead3ead9299609a826e2344eb63aa4
+
+# 双重SHA-256
+print(double_sha256("Bitcoin"))
+# 输出: 5361b3e9b4b6c5e1a8a8f7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8</code></pre>
+    
+    <h3>2. RIPEMD-160哈希函数</h3>
+    
+    <h4>2.1 RIPEMD-160简介</h4>
+    <p>RIPEMD-160是另一种哈希函数，输出160位（20字节）。比特币在地址生成时使用它。</p>
+    
+    <h4>2.2 在比特币中的应用</h4>
+    <p>生成比特币地址时，公钥经过：</p>
+    <pre><code>address = RIPEMD160(SHA256(publicKey))</code></pre>
+    
+    <div class="info-box">
+        <h4>为什么先SHA-256再RIPEMD-160？</h4>
+        <ul>
+            <li>SHA-256更广泛使用和测试，安全性更确定</li>
+            <li>RIPEMD-160输出更短，地址更短（便于使用）</li>
+            <li>组合使用提供双重保护</li>
+        </ul>
+    </div>
+    
+    <h3>3. 公钥密码学（Public-Key Cryptography）</h3>
+    
+    <h4>3.1 对称加密 vs 非对称加密</h4>
+    
+    <p><strong>对称加密</strong>：加密和解密使用相同的密钥</p>
+    <div class="example-box">
+        <p>就像一把钥匙可以开门也可以锁门。问题是如何安全地传递这把钥匙？</p>
+    </div>
+    
+    <p><strong>非对称加密</strong>：使用一对密钥（公钥和私钥）</p>
+    <div class="example-box">
+        <ul>
+            <li><strong>公钥</strong>：可以公开，用于加密或验证签名</li>
+            <li><strong>私钥</strong>：必须保密，用于解密或生成签名</li>
+            <li><strong>数学关系</strong>：公钥由私钥生成，但不能反推</li>
+        </ul>
+    </div>
+    
+    <h4>3.2 椭圆曲线密码学（ECC）</h4>
+    <p>比特币使用<strong>椭圆曲线密码学</strong>，具体是<strong>secp256k1</strong>曲线。</p>
+    
+    <div class="info-box">
+        <h4>为什么选择ECC？</h4>
+        <p>相比传统的RSA算法，ECC的优势：</p>
+        <ul>
+            <li><strong>密钥更短</strong>：256位ECC ≈ 3072位RSA（安全性相当）</li>
+            <li><strong>计算更快</strong>：签名和验证速度更快</li>
+            <li><strong>存储更少</strong>：公钥、私钥、签名都更小</li>
+        </ul>
+    </div>
+    
+    <h4>3.3 椭圆曲线基础</h4>
+    
+    <p><strong>椭圆曲线方程</strong>：</p>
+    <pre><code>y² = x³ + ax + b</code></pre>
+    
+    <p>比特币使用的<strong>secp256k1曲线</strong>参数：</p>
+    <pre><code>y² = x³ + 7  (即 a=0, b=7)
+p = 2^256 - 2^32 - 977  (有限域的模数)</code></pre>
+    
+    <div class="info-box">
+        <h4>通俗理解椭圆曲线</h4>
+        <p>想象一个特殊的曲线，在这个曲线上定义了一种"加法"运算：</p>
+        <ul>
+            <li>选择曲线上的一个特殊点G（生成点/基点）</li>
+            <li>私钥是一个随机大数k</li>
+            <li>公钥 = G × k（椭圆曲线点乘，本质是G加自己k次）</li>
+            <li>知道公钥和G，几乎不可能反推出k（离散对数问题）</li>
+        </ul>
+    </div>
+    
+    <h4>3.4 密钥对生成过程</h4>
+    
+    <pre><code>// 生成比特币密钥对（伪代码）
+
+// 1. 生成私钥（256位随机数）
+privateKey = random_256_bit_number()
+// 范围: 1 到 n-1 (n是曲线的阶)
+// 例如: 0x18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725
+
+// 2. 计算公钥（椭圆曲线点乘）
+publicKey = privateKey × G
+// G是secp256k1的生成点（固定值）
+// 公钥是一个点(x, y)，每个坐标32字节
+
+// 3. 压缩公钥（可选）
+// 非压缩: 0x04 + x + y (65字节)
+// 压缩: 0x02/0x03 + x (33字节，y的奇偶性决定前缀)
+
+// 例如压缩公钥:
+// 02 + 50863ad64a87ae8a2fe83c1af1a8403cb53f53e486d8511dad8a04887e5b2352</code></pre>
+    
+    <h3>4. 数字签名（Digital Signature）</h3>
+    
+    <h4>4.1 数字签名的作用</h4>
+    <p>数字签名解决三个问题：</p>
+    <ul>
+        <li><strong>身份认证</strong>：证明消息确实来自私钥持有者</li>
+        <li><strong>数据完整性</strong>：证明消息没有被篡改</li>
+        <li><strong>不可否认性</strong>：签名者无法否认自己签过名</li>
+    </ul>
+    
+    <div class="example-box">
+        <h4>类比现实中的签名</h4>
+        <p>数字签名类似于手写签名，但更安全：</p>
+        <ul>
+            <li>手写签名可以被模仿</li>
+            <li>数字签名基于私钥，无法伪造（除非私钥泄露）</li>
+            <li>每次签名都是唯一的，针对特定消息</li>
+        </ul>
+    </div>
+    
+    <h4>4.2 ECDSA（椭圆曲线数字签名算法）</h4>
+    <p>比特币使用<strong>ECDSA</strong>进行签名和验证。</p>
+    
+    <p><strong>签名过程：</strong></p>
+    <pre><code>// 签名交易（伪代码）
+
+function sign(message, privateKey):
+    // 1. 计算消息哈希
+    z = SHA256(SHA256(message))
+    
+    // 2. 生成随机数k（每次签名都要不同！）
+    k = random_number()
+    
+    // 3. 计算点R = k × G
+    R = k × G
+    r = R.x mod n  // 取R点的x坐标
+    
+    // 4. 计算s
+    s = k⁻¹ × (z + r × privateKey) mod n
+    
+    // 5. 签名结果
+    signature = (r, s)
+    
+    return signature
+
+// 实际签名示例
+私钥: 0x18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725
+消息: "I am sending 1 BTC to Alice"
+签名: (r, s) 其中r和s各32字节</code></pre>
+    
+    <p><strong>验证过程：</strong></p>
+    <pre><code>// 验证签名（伪代码）
+
+function verify(message, signature, publicKey):
+    // 解析签名
+    (r, s) = signature
+    
+    // 计算消息哈希
+    z = SHA256(SHA256(message))
+    
+    // 计算辅助值
+    w = s⁻¹ mod n
+    u1 = z × w mod n
+    u2 = r × w mod n
+    
+    // 计算点P
+    P = u1 × G + u2 × publicKey
+    
+    // 验证
+    if P.x mod n == r:
+        return True  // 签名有效
+    else:
+        return False  // 签名无效</code></pre>
+    
+    <div class="warning-box">
+        <h4><i class="fas fa-exclamation-triangle"></i> 随机数k的重要性</h4>
+        <p><strong>k值必须是真随机且每次不同！</strong></p>
+        <p>如果重用k，或者k可预测，攻击者可以从两个签名中计算出私钥：</p>
+        <pre><code>// 如果两个签名使用了相同的k
+signature1 = (r, s1) for message1
+signature2 = (r, s2) for message2  // 注意r相同！
+
+// 攻击者可以计算：
+k = (z1 - z2) / (s1 - s2) mod n
+privateKey = (s × k - z) / r mod n
+
+// 私钥被泄露！</code></pre>
+        <p>历史上PlayStation 3就因为这个漏洞被破解（重用了k值）。</p>
+    </div>
+    
+    <h4>4.3 DER编码签名</h4>
+    <p>比特币签名使用DER（Distinguished Encoding Rules）格式编码：</p>
+    
+    <pre><code>// DER编码结构
+0x30 [total-length] 0x02 [r-length] [r] 0x02 [s-length] [s]
+
+// 示例
+304402203e4516da7253cf068effec6b95c41221c0cf3a8e6ccb8cbf1725b562e9afde2c022054e1c258c2981cdfba5df1f46661fb6541c44f77ca0092f3600331abfffb125101
+
+解析:
+30 - DER序列标识
+44 - 总长度(68字节)
+02 - 整数标识(r)
+20 - r的长度(32字节)
+3e4516da...fde2c - r值
+02 - 整数标识(s)
+20 - s的长度(32字节)
+54e1c258...125101 - s值</code></pre>
+    
+    <h3>5. 比特币地址生成</h3>
+    
+    <h4>5.1 从私钥到地址的完整过程</h4>
+    
+    <pre><code>// 生成比特币地址（P2PKH）的详细步骤
+
+// 1. 生成私钥（256位随机数）
+privateKey = "18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725"
+
+// 2. 计算公钥（椭圆曲线点乘）
+publicKey = privateKey × G
+// 结果（未压缩）: 04 + x-coordinate + y-coordinate (65字节)
+// 结果（压缩）: 02/03 + x-coordinate (33字节)
+
+// 3. SHA-256哈希公钥
+sha256Hash = SHA256(publicKey)
+
+// 4. RIPEMD-160哈希结果
+ripemd160Hash = RIPEMD160(sha256Hash)
+// 这20字节的哈希称为 Public Key Hash (PKH)
+
+// 5. 添加版本字节
+versionedHash = 0x00 + ripemd160Hash  // 0x00表示主网P2PKH地址
+
+// 6. 计算校验和（双重SHA-256的前4字节）
+checksum = SHA256(SHA256(versionedHash))[0:4]
+
+// 7. 拼接版本+哈希+校验和
+addressBytes = versionedHash + checksum
+
+// 8. Base58编码
+address = Base58(addressBytes)
+
+// 最终结果，例如：
+// 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</code></pre>
+    
+    <h4>5.2 Base58编码</h4>
+    <p>Base58是Base64的变体，去除了容易混淆的字符：</p>
+    
+    <div class="info-box">
+        <h4>Base58字符集</h4>
+        <p>使用的字符：</p>
+        <code>123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz</code>
+        <p>去除了：</p>
+        <ul>
+            <li>0（数字零）- 容易与O（大写字母O）混淆</li>
+            <li>O（大写字母O）</li>
+            <li>I（大写字母I）- 容易与l（小写字母L）混淆</li>
+            <li>l（小写字母L）</li>
+            <li>+（加号）和 /（斜杠）- 不便于复制粘贴</li>
+        </ul>
+    </div>
+    
+    <h4>5.3 不同类型的地址</h4>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>地址类型</th>
+                    <th>前缀</th>
+                    <th>格式</th>
+                    <th>示例</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>P2PKH (Legacy)</td>
+                    <td>1</td>
+                    <td>Base58</td>
+                    <td>1A1zP1eP5QGe...</td>
+                </tr>
+                <tr>
+                    <td>P2SH (Script)</td>
+                    <td>3</td>
+                    <td>Base58</td>
+                    <td>3J98t1WpEZ73...</td>
+                </tr>
+                <tr>
+                    <td>P2WPKH (SegWit)</td>
+                    <td>bc1q</td>
+                    <td>Bech32</td>
+                    <td>bc1qw508d6qe...</td>
+                </tr>
+                <tr>
+                    <td>P2WSH (SegWit Script)</td>
+                    <td>bc1q</td>
+                    <td>Bech32</td>
+                    <td>bc1qrp33g0q5...</td>
+                </tr>
+                <tr>
+                    <td>P2TR (Taproot)</td>
+                    <td>bc1p</td>
+                    <td>Bech32m</td>
+                    <td>bc1p5cyxnux...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <h3>6. 助记词（Mnemonic Seed）</h3>
+    
+    <h4>6.1 BIP39标准</h4>
+    <p>助记词是一组单词（通常12或24个），用于恢复钱包的所有私钥。</p>
+    
+    <div class="info-box">
+        <h4>为什么需要助记词？</h4>
+        <p>私钥是256位的随机数，例如：</p>
+        <code>E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262</code>
+        <p>这样的十六进制字符串：</p>
+        <ul>
+            <li>难以记忆</li>
+            <li>容易抄错</li>
+            <li>不便于备份</li>
+        </ul>
+        <p>助记词将其转换为人类可读的单词，例如：</p>
+        <code>witch collapse practice feed shame open despair creek road again ice least</code>
+    </div>
+    
+    <h4>6.2 助记词生成过程</h4>
+    
+    <pre><code>// BIP39助记词生成（伪代码）
+
+// 1. 生成熵（随机数）
+entropy = random_bits(128)  // 12词，或256位对应24词
+// 例如: 0f1e2d3c4b5a69788796a5b4c3d2e1f0
+
+// 2. 计算校验和
+checksum = SHA256(entropy)[0:(entropy_length/32)]
+// 128位熵需要4位校验和
+
+// 3. 拼接熵和校验和
+bits = entropy + checksum  // 132位
+
+// 4. 分割成11位的段
+segments = split_every_11_bits(bits)  // 12个段
+
+// 5. 每个段对应一个单词（BIP39有2048个单词）
+words = []
+for segment in segments:
+    index = binary_to_int(segment)  // 0-2047
+    words.append(BIP39_WORDLIST[index])
+
+// 结果: 12个单词
+// army van defense carry jealous true garbage claim echo media make crunch</code></pre>
+    
+    <h4>6.3 从助记词到种子</h4>
+    
+    <pre><code>// 助记词转换为种子（伪代码）
+
+function mnemonic_to_seed(mnemonic, passphrase=""):
+    // 使用PBKDF2密钥派生函数
+    salt = "mnemonic" + passphrase
+    seed = PBKDF2(
+        password = mnemonic,
+        salt = salt,
+        iterations = 2048,
+        hash_function = HMAC-SHA512,
+        output_length = 512 bits
+    )
+    return seed  // 512位(64字节)的种子
+
+// 这个512位种子可以生成整个HD钱包</code></pre>
+    
+    <h3>7. 分层确定性钱包（HD Wallet）</h3>
+    
+    <h4>7.1 BIP32标准</h4>
+    <p>HD钱包可以从一个种子派生出无限数量的密钥对，形成树状结构。</p>
+    
+    <div class="info-box">
+        <h4>HD钱包的优势</h4>
+        <ul>
+            <li><strong>单次备份</strong>：只需备份一个助记词</li>
+            <li><strong>无限地址</strong>：可以生成任意数量的地址</li>
+            <li><strong>组织结构</strong>：可以为不同用途创建不同的账户</li>
+            <li><strong>审计功能</strong>：可以创建只读钱包（扩展公钥）</li>
+        </ul>
+    </div>
+    
+    <h4>7.2 密钥派生</h4>
+    
+    <pre><code>// HD钱包密钥派生（伪代码）
+
+// 1. 主密钥生成
+function generate_master_key(seed):
+    hmac = HMAC-SHA512(key="Bitcoin seed", data=seed)
+    master_private_key = hmac[0:32]
+    master_chain_code = hmac[32:64]
+    return (master_private_key, master_chain_code)
+
+// 2. 子密钥派生
+function derive_child_key(parent_key, parent_chain_code, index):
+    if index >= 2^31:  // 硬化派生
+        data = 0x00 + parent_key + index
+    else:  // 正常派生
+        data = parent_public_key + index
+    
+    hmac = HMAC-SHA512(key=parent_chain_code, data=data)
+    child_private_key = (hmac[0:32] + parent_key) mod n
+    child_chain_code = hmac[32:64]
+    return (child_private_key, child_chain_code)
+
+// 3. 派生路径示例
+// m / purpose' / coin_type' / account' / change / address_index
+// m / 44'      / 0'         / 0'       / 0      / 0
+
+// 例如：m/44'/0'/0'/0/0
+// 这是第一个比特币接收地址</code></pre>
+    
+    <h4>7.3 BIP44路径标准</h4>
+    
+    <div class="example-box">
+        <h4>标准派生路径</h4>
+        <pre><code>m / purpose' / coin_type' / account' / change / address_index
+
+各层含义：
+- purpose: 44'(固定，表示BIP44)
+- coin_type: 0'(BTC), 60'(ETH), 2'(LTC)等
+- account: 账户索引，从0'开始
+- change: 0=外部链(接收), 1=内部链(找零)
+- address_index: 地址索引，从0开始
+
+示例：
+m/44'/0'/0'/0/0  - 第1个接收地址
+m/44'/0'/0'/0/1  - 第2个接收地址
+m/44'/0'/0'/1/0  - 第1个找零地址
+m/44'/0'/1'/0/0  - 第2个账户的第1个接收地址
+
+撇号(')表示硬化派生，增强安全性</code></pre>
+    </div>
+    
+    <h3>8. 多重签名（Multisig）</h3>
+    
+    <h4>8.1 什么是多重签名？</h4>
+    <p>多重签名要求多个私钥共同签名才能花费比特币，通常表示为<strong>M-of-N</strong>：</p>
+    <ul>
+        <li>N：总共有N个私钥</li>
+        <li>M：需要至少M个私钥签名</li>
+    </ul>
+    
+    <div class="example-box">
+        <h4>多签应用场景</h4>
+        <ul>
+            <li><strong>2-of-3</strong>：你、你的配偶、律师各持有一个密钥，任意两个可以花费</li>
+            <li><strong>3-of-5</strong>：公司董事会5人，需要3人同意才能动用资金</li>
+            <li><strong>2-of-2</strong>：交易所和用户各持一个密钥，双方同意才能提现（托管）</li>
+        </ul>
+    </div>
+    
+    <h4>8.2 P2SH多签地址</h4>
+    
+    <pre><code>// 2-of-3多签脚本
+OP_2                          // 需要2个签名
+<公钥1> <公钥2> <公钥3>        // 3个公钥
+OP_3                          // 总共3个公钥
+OP_CHECKMULTISIG              // 验证多重签名
+
+// 这个脚本被哈希后创建P2SH地址
+scriptHash = RIPEMD160(SHA256(script))
+address = Base58Check(0x05 + scriptHash)  // 以3开头的地址</code></pre>
+    
+    <h3>9. 密码学安全最佳实践</h3>
+    
+    <div class="warning-box">
+        <h4><i class="fas fa-exclamation-triangle"></i> 私钥安全</h4>
+        <ul>
+            <li><strong>永远不要在线生成私钥</strong>：使用离线的硬件钱包或纸钱包</li>
+            <li><strong>使用真随机数</strong>：不要用可预测的随机数生成器</li>
+            <li><strong>多重备份</strong>：将助记词备份在多个安全的地方</li>
+            <li><strong>防火防水</strong>：使用金属板刻录助记词，防止纸张损坏</li>
+            <li><strong>分散存储</strong>：不要把备份放在同一个地方</li>
+            <li><strong>永不分享</strong>：私钥和助记词永远不要告诉任何人</li>
+            <li><strong>警惕钓鱼</strong>：任何让你输入助记词的网站都是诈骗</li>
+        </ul>
+    </div>
+    
+    <div class="success-box">
+        <h4><i class="fas fa-check-circle"></i> 安全建议</h4>
+        <ul>
+            <li>使用硬件钱包（Ledger、Trezor等）</li>
+            <li>对大额资金使用多重签名</li>
+            <li>定期测试恢复流程</li>
+            <li>考虑使用Shamir密钥分割（SLIP39）</li>
+            <li>为助记词添加额外密码（Passphrase）</li>
+        </ul>
+    </div>
+    
+    <h3>10. 高级密码学话题</h3>
+    
+    <h4>10.1 Schnorr签名</h4>
+    <p>随Taproot升级引入，相比ECDSA的优势：</p>
+    <ul>
+        <li><strong>更简洁</strong>：数学上更优雅</li>
+        <li><strong>可聚合</strong>：多个签名可以合并成一个</li>
+        <li><strong>隐私性</strong>：多签和单签外观相同</li>
+        <li><strong>更高效</strong>：验证速度更快</li>
+    </ul>
+    
+    <h4>10.2 零知识证明</h4>
+    <p>虽然比特币本身不使用，但相关技术（如zk-SNARKs）可以：</p>
+    <ul>
+        <li>在不透露具体信息的情况下证明某事为真</li>
+        <li>增强隐私性（如Zcash使用的技术）</li>
+    </ul>
+    
+    <h3>11. 总结</h3>
+    
+    <p>密码学是比特币安全性的基石：</p>
+    
+    <div class="success-box">
+        <h4><i class="fas fa-check-circle"></i> 核心要点</h4>
+        <ul>
+            <li><strong>哈希函数</strong>：提供数据完整性和工作量证明</li>
+            <li><strong>椭圆曲线密码学</strong>：生成密钥对，实现所有权证明</li>
+            <li><strong>数字签名</strong>：证明交易由私钥持有者授权</li>
+            <li><strong>地址生成</strong>：通过多层哈希保护公钥</li>
+            <li><strong>HD钱包</strong>：从单一种子派生所有密钥</li>
+            <li><strong>多重签名</strong>：增强安全性和信任分散</li>
+        </ul>
+    </div>
+    
+    <p>理解这些密码学原理后，你将能更好地理解比特币的<strong>交易系统</strong>、<strong>脚本语言</strong>和<strong>安全机制</strong>。</p>
+    
+    <button class="back-button" onclick="goHome()"><i class="fas fa-arrow-left"></i> 返回首页</button>
+</div>
