@@ -22,8 +22,8 @@ description: 从「什么是钱？」到「我运行自己的比特币节点」�
 | 1 | [法币为什么坏了](/journey/why-money-is-broken) | 通胀不是天灾，是政策——看清系统本来的样子 |
 | 2 | [比特币到底是什么](/journey/what-bitcoin-actually-is) | 不碰行话，先建立正确的直觉 |
 | 3 | [比特币如何运转](/journey/how-bitcoin-works) | 交易、区块、挖矿、共识，一条链讲通 |
-| 4 | [如何使用比特币](/journey/using-bitcoin) | 挑钱包、收款、付手续费，亲手操作 |
-| 5 | [成为自己的银行](/journey/be-your-own-bank) | 自我托管、备份助记词、掌控自己的钱 |
+| 4 | [成为自己的银行](/journey/be-your-own-bank) | 自我托管、备份助记词、掌控自己的钱 |
+| 5 | [如何使用比特币](/journey/using-bitcoin) | 链上转账、手续费实战、闪电网络入门 |
 | 6 | [主权：最终的自立](/journey/sovereignty) | 运行自己的节点，验证一切 |
 
 准备好就从 [第 1 章 · 法币为什么坏了](/journey/why-money-is-broken) 开始。

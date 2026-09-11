@@ -2,16 +2,16 @@
 
 > **给接手的 AI / 开发者：本文件是唯一可信进度源。完成任何条目后，立刻回来更新这里的 checkbox 和统计数字，并同步推送到 GitHub。** 开发规范见 [AGENTS.md](AGENTS.md)。
 >
-> 最后更新：2026-09-12（框架提交；翻译工作进行中，随完成逐块更新）
+> 最后更新：2026-09-12（journey 6 章 + 实用页面完成）
 
 ## 总览
 
 | 板块 | 总量 | 已完成 | 状态 |
 | --- | --- | --- | --- |
 | 框架（VitePress 配置/主题/首页/导览页） | — | ✅ | 完成 |
-| journey/ 学习之旅 | 6 | 0 | ⏳ 本次会话进行中 |
+| journey/ 学习之旅 | 6 | 6 | ✅ 全文翻译完成 |
 | rabbit-holes/ 深度专题 | 17 | 0 | ⏳ 待翻译 |
-| pages/ 实用页面（privacy/security/node） | 3 | 0 | ⏳ 待翻译 |
+| pages/ 实用页面（privacy/security/node） | 3 | 3 | ✅ 重写完成（本站语境） |
 | glossary/ 术语表（标题+短定义） | 476 | 0 | ⏳ 待翻译 |
 | glossary/ 术语表（全文精翻） | 476 | 0 | ⏳ 长期任务 |
 | 原创中文示意图 | ≥4 | 0 | ⏳ 待绘制 |
@@ -44,14 +44,14 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 
 ## 翻译进度明细
 
-### journey/ 学习之旅（0/6）
+### journey/ 学习之旅（6/6 ✅）
 
-- [ ] `why-money-is-broken` 第 1 章 · 法币为什么坏了
-- [ ] `what-bitcoin-actually-is` 第 2 章 · 比特币到底是什么
-- [ ] `how-bitcoin-works` 第 3 章 · 比特币如何运转
-- [ ] `using-bitcoin` 第 4 章 · 如何使用比特币
-- [ ] `be-your-own-bank` 第 5 章 · 成为自己的银行
-- [ ] `sovereignty` 第 6 章 · 主权：最终的自立
+- [x] `why-money-is-broken` 第 1 章 · 法币为什么坏了
+- [x] `what-bitcoin-actually-is` 第 2 章 · 比特币到底是什么
+- [x] `how-bitcoin-works` 第 3 章 · 比特币如何运转
+- [x] `using-bitcoin` 第 4 章 · 如何使用比特币
+- [x] `be-your-own-bank` 第 5 章 · 成为自己的银行
+- [x] `sovereignty` 第 6 章 · 主权：最终的自立
 
 ### rabbit-holes/ 深度专题（0/17）
 
@@ -60,9 +60,9 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 - [ ] `bitcoin-units`、`energy`、`inflation-bug-postmortem`
 - [ ] `bitcoin-privacy`、`lightning-routing`、`block-size-war`、`bip-process`、`quantum-and-bitcoin`
 
-### pages/ 实用页面（0/3，另有 index/manifesto/about 已重写完成）
+### pages/ 实用页面（3/3 ✅，另有 index/manifesto/about 已重写完成）
 
-- [ ] `privacy` 隐私指南　[ ] `security` 安全指南　[ ] `node` 运行自己的节点
+- [x] `privacy` 隐私指南　[x] `security` 安全指南　[x] `node` 运行自己的节点
 
 ### glossary/ 术语表
 
