@@ -2,7 +2,7 @@
 
 > **给接手的 AI / 开发者：本文件是唯一可信进度源。完成任何条目后，立刻回来更新这里的 checkbox 和统计数字，并同步推送到 GitHub。** 开发规范见 [AGENTS.md](AGENTS.md)。
 >
-> 最后更新：2026-09-12（全站骨架+内容主体完成；术语全文精翻进行中）
+> 最后更新：2026-09-12（首期开发完成：全站内容主体上线；后续会话继续术语精翻）
 
 ## 总览
 
@@ -69,7 +69,7 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 - [x] 476 条「标题 + 短定义」中文翻译（在 `tools/glossary-zh.json`，已生成全部页面）
 - [x] 476 条侧边栏（按首字母分组折叠）
 - [ ] 全文精翻：`docs/glossary/` 中标注「已生成待精翻」的页面。**核对方法**：`grep -rl "glossary-stub" docs/glossary/ | wc -l` 得剩余数；精翻时删除页内 `glossary-stub` 注释块、补全文、保留 frontmatter。
-- 已精翻（12）：`address` `private-key` `public-key` `seed-phrase` `wallet` `node` `mining` `transaction` `block` `blockchain` `utxo-unspent-transaction-output` `lightning-network`
+- 已精翻（13）：`address` `private-key` `public-key` `seed-phrase` `wallet` `node` `mining` `transaction` `block` `blockchain` `hash` `utxo-unspent-transaction-output` `lightning-network`（剩余 463 条，核对：`grep -rl "glossary-stub" docs/glossary/ | wc -l`）
 - 建议第一批（高频词优先）：`address` `private-key` `public-key` `seed-phrase` `wallet` `node` `mining` `transaction` `block` `blockchain` `utxo-unspent-transaction-output` `fee-estimation` `lightning-network` `hash` `halving` `cold-storage` `hot-wallet` `multisig` `bech32` `bip-39` `consensus` `difficulty` `confirmation` `mempool` `fork` `sat` `whitepaper`
 
 ### 原创示意图（docs/public/images/）
