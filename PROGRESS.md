@@ -2,7 +2,7 @@
 
 > **给接手的 AI / 开发者：本文件是唯一可信进度源。完成任何条目后，立刻回来更新这里的 checkbox 和统计数字，并同步推送到 GitHub。** 开发规范见 [AGENTS.md](AGENTS.md)。
 >
-> 最后更新：2026-09-12（journey 6 章 + 实用页面完成）
+> 最后更新：2026-09-12（全站骨架+内容主体完成；术语全文精翻进行中）
 
 ## 总览
 
@@ -12,9 +12,9 @@
 | journey/ 学习之旅 | 6 | 6 | ✅ 全文翻译完成 |
 | rabbit-holes/ 深度专题 | 17 | 0 | ⏳ 待翻译 |
 | pages/ 实用页面（privacy/security/node） | 3 | 3 | ✅ 重写完成（本站语境） |
-| glossary/ 术语表（标题+短定义） | 476 | 0 | ⏳ 待翻译 |
-| glossary/ 术语表（全文精翻） | 476 | 0 | ⏳ 长期任务 |
-| 原创中文示意图 | ≥4 | 0 | ⏳ 待绘制 |
+| glossary/ 术语表（标题+短定义） | 476 | 476 | ✅ 全部完成并生成页面 |
+| glossary/ 术语表（全文精翻） | 476 | 0 | ⏳ 长期任务，见下方清单 |
+| 原创中文示意图 | 5 | 5 | ✅ 首批完成（可继续扩充） |
 | 交互组件（原站 Svelte widget 的 Vue 复刻） | 7 | 0 | ⏳ 未开始，非必需 |
 | Cloudflare Pages 部署 | — | 0 | ⏳ 需用户在 Dashboard 操作 |
 
@@ -66,10 +66,10 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 
 ### glossary/ 术语表
 
-- [ ] 476 条「标题 + 短定义」中文翻译（写入 `tools/glossary-zh.json`，由生成器产出全部页面）
-- [ ] 476 条侧边栏（按首字母分组折叠）
+- [x] 476 条「标题 + 短定义」中文翻译（在 `tools/glossary-zh.json`，已生成全部页面）
+- [x] 476 条侧边栏（按首字母分组折叠）
 - [ ] 全文精翻：`docs/glossary/` 中标注「已生成待精翻」的页面。**核对方法**：`grep -rl "glossary-stub" docs/glossary/ | wc -l` 得剩余数；精翻时删除页内 `glossary-stub` 注释块、补全文、保留 frontmatter。
-- 已精翻（0）：暂无
+- 已精翻（12）：`address` `private-key` `public-key` `seed-phrase` `wallet` `node` `mining` `transaction` `block` `blockchain` `utxo-unspent-transaction-output` `lightning-network`
 - 建议第一批（高频词优先）：`address` `private-key` `public-key` `seed-phrase` `wallet` `node` `mining` `transaction` `block` `blockchain` `utxo-unspent-transaction-output` `fee-estimation` `lightning-network` `hash` `halving` `cold-storage` `hot-wallet` `multisig` `bech32` `bip-39` `consensus` `difficulty` `confirmation` `mempool` `fork` `sat` `whitepaper`
 
 ### 原创示意图（docs/public/images/）
