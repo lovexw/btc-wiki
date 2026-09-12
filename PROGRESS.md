@@ -2,7 +2,7 @@
 
 > **给接手的 AI / 开发者：本文件是唯一可信进度源。完成任何条目后，立刻回来更新这里的 checkbox 和统计数字，并同步推送到 GitHub。** 开发规范见 [AGENTS.md](AGENTS.md)。
 >
-> 最后更新：2026-09-12（术语精翻 B2 批完成，累计 25/476；首期开发已上线 https://btc-wiki-7oo.pages.dev）
+> 最后更新：2026-09-12（术语精翻 B3 批进行中：第一批 26 条完成，累计 51/476；断点详情见下方「B3 断点」）
 
 ## 总览
 
@@ -13,7 +13,7 @@
 | rabbit-holes/ 深度专题 | 17 | 0 | ⏳ 待翻译 |
 | pages/ 实用页面（privacy/security/node） | 3 | 3 | ✅ 重写完成（本站语境） |
 | glossary/ 术语表（标题+短定义） | 476 | 476 | ✅ 全部完成并生成页面 |
-| glossary/ 术语表（全文精翻） | 476 | 25 | ⏳ 进行中，按下方批次计划推进 |
+| glossary/ 术语表（全文精翻） | 476 | 51 | ⏳ 进行中，按下方批次计划推进 |
 | 原创中文示意图 | 5 | 5 | ✅ 首批完成（可继续扩充） |
 | 交互组件（原站 Svelte widget 的 Vue 复刻） | 7 | 0 | ⏳ 未开始，非必需 |
 | Cloudflare Pages 部署 | — | ✅ | 已上线 https://btc-wiki-7oo.pages.dev |
@@ -73,7 +73,22 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 - [x] 476 条「标题 + 短定义」中文翻译（在 `tools/glossary-zh.json`，已生成全部页面）
 - [x] 476 条侧边栏（按首字母分组折叠）
 - [ ] 全文精翻：`docs/glossary/` 中标注「已生成待精翻」的页面。**核对方法**：`grep -rl "glossary-stub" docs/glossary/ | wc -l` 得剩余数；精翻时删除页内 `glossary-stub` 注释块、补全文、保留 frontmatter。
-- 已精翻（25）：`address` `private-key` `public-key` `seed-phrase` `wallet` `node` `mining` `transaction` `block` `blockchain` `hash` `utxo-unspent-transaction-output` `lightning-network`；B2 批（12）：`fee-estimation` `multisig` `bip-39` `difficulty` `mempool` `fork` `whitepaper` `halving-halvening` `bech32m` `bip-173-bech32` `consensus-parameter` `satoshi-unit`（剩余 451 条，核对：`grep -rl "glossary-stub" docs/glossary/ | wc -l`）
+- 已精翻（51）：`address` `private-key` `public-key` `seed-phrase` `wallet` `node` `mining` `transaction` `block` `blockchain` `hash` `utxo-unspent-transaction-output` `lightning-network`；B2 批（12）：`fee-estimation` `multisig` `bip-39` `difficulty` `mempool` `fork` `whitepaper` `halving-halvening` `bech32m` `bip-173-bech32` `consensus-parameter` `satoshi-unit`；B3 批第一批（26）：`address-clustering` `address-derivation-path` `address-indexing` `address-reuse` `b32-address` `burn-address` `green-address` `stealth-address` `vanity-address` `custodial-lightning-wallet` `custodial-wallet` `deterministic-wallet` `gui-wallet` `hardware-wallet` `hd-wallet-hierarchical-deterministic-wallet` `hdm-multi-signature-hd-wallet` `hierarchical-deterministic-wallet` `watch-only-wallet` `wasabi-wallet` `hardware-seed-vault` `inheritance-seed-backup` `mnemonic-entropy-bits` `mnemonic-password` `seed-entropy-mixer` `seed-tool` `paper-wallet`（剩余 425 条，核对：`grep -rl "glossary-stub" docs/glossary/ | wc -l`）
+
+### B3 断点（2026-09-12，B3 实际共 56 条，已完成 26，剩 30 条）
+
+> 下个会话从「B3 剩余」清单直接续做，不用重新枚举。源文件已读入过 B3-4 密钥管理组（9 条源文可重读），其余组未读。
+
+- **B3 剩余清单（30 条，按建议续做顺序）**：
+  - B3-4 密钥管理（9）：`exchange-api-key` `key-aggregation` `key-generation-ceremony` `key-pool` `key-rotation` `key-split` `key-wiping` `wallet-import-format-wif` `xpub-extended-public-key`
+  - B3-5 签名类（11）：`adapter-signature` `ecdsa-elliptic-curve-digital-signature-algorithm` `low-r-signatures` `low-s-signatures` `mono-signature` `partial-signature` `proof-keys` `quorum-signatures` `schnorr-signature` `signature-aggregation` `signature-clipping`
+  - B3-6 脚本支付（5）：`p2pk-pay-public-key` `p2pkh-pay-public-key-hash` `p2wpkh-pay-witness-public-key-hash` `k-k-multisig` `hierarchical-multisig`
+  - B3-7 其他（5）：`lurking-wife-mode` `not-your-keys-not-your-coins` `paper-hands` `self-custody` `static-channel-backup-scb`
+- **本机环境备忘（2026-09-12 实测）**：
+  - 源内容仓库已克隆到 `/Users/xw/.zcode/workspace/learnbitcoin-content`（AGENTS.md 写的 `/Users/xwmacbook/...` 是另一台机器的路径，本机不存在）。
+  - 本机 `npm` 不在 PATH：用 `node /usr/local/lib/node_modules/npm/bin/npm-cli.js run build` 代替 `npm run build`。
+  - `tools/glossary-zh.json` 保持单行紧凑格式（每词条一行），**不要用 JSON.stringify 重写整个文件**——会重排 1900+ 行；小改动用 perl/node 精准替换。本批曾把 `custodial-lightning-wallet`、`hardware-seed-vault` 两条标题补齐英文原名（页面文件与 zh.json 已同步改，侧边栏已重生成）。
+  - 已建立 slug 校验脚本 `/tmp/zhq.cjs`（临时文件，重启会丢失，重建一行即可）：`node /tmp/zhq.cjs <slug...>` 返回中文标题或 MISSING，用于写「相关词条」前核对链接。
 
 ### 术语全文精翻 · 续接批次计划（新会话照此推进）
 
@@ -89,7 +104,7 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 | 批次 | 主题 | slug 匹配关键词 | 约数 |
 | --- | --- | --- | --- |
 | B2 | 高频核心补齐 ✅ 2026-09-12 完成 | （固定清单）`fee-estimation` `multisig` `bip-39` `difficulty` `mempool` `fork` `whitepaper` `halving-halvening` `bech32m` `bip-173-bech32` `consensus-parameter` `satoshi-unit` | 12 |
-| B3 | 钱包与密钥安全 | `seed\|mnemonic\|key\|wallet\|custod\|backup\|passphrase\|signature\|address\|cold\|multisig\|recovery\|entropy\|derivation\|xpub\|wif\|paper` | ~58 |
+| B3 | 钱包与密钥安全 ⏳ 26/56（2026-09-12 第一批，剩余见上方「B3 断点」） | `seed\|mnemonic\|key\|wallet\|custod\|backup\|passphrase\|signature\|address\|cold\|multisig\|recovery\|entropy\|derivation\|xpub\|wif\|paper` | ~58 |
 | B4 | 闪电网络 | `lightning\|htlc\|channel\|bolt\|lnurl\|gossip\|onion\|preimage\|invoice\|sphinx\|autopilot\|wumbo\|penalty` | ~40 |
 | B5 | 挖矿与共识 | `mining\|miner\|hashrate\|difficulty\|proof\|consensus\|fork\|block-\|nonce\|asic\|pool\|subsidy\|halving\|retarget\|orphan\|mev` | ~68 |
 | B6 | 隐私与合规 | `coinjoin\|privacy\|mixer\|wasabi\|samourai\|tumbler\|cluster\|heuristic\|analysis\|fingerprint\|kyc\|aml\|chain-` | ~15 |
