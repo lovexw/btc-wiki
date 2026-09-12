@@ -13,7 +13,7 @@
 | rabbit-holes/ 深度专题 | 17 | 0 | ⏳ 待翻译 |
 | pages/ 实用页面（privacy/security/node） | 3 | 3 | ✅ 重写完成（本站语境） |
 | glossary/ 术语表（标题+短定义） | 476 | 476 | ✅ 全部完成并生成页面 |
-| glossary/ 术语表（全文精翻） | 476 | 0 | ⏳ 长期任务，见下方清单 |
+| glossary/ 术语表（全文精翻） | 476 | 13 | ⏳ 进行中，按下方批次计划推进 |
 | 原创中文示意图 | 5 | 5 | ✅ 首批完成（可继续扩充） |
 | 交互组件（原站 Svelte widget 的 Vue 复刻） | 7 | 0 | ⏳ 未开始，非必需 |
 | Cloudflare Pages 部署 | — | ✅ | 已上线 https://btc-wiki-7oo.pages.dev |
@@ -74,7 +74,28 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 - [x] 476 条侧边栏（按首字母分组折叠）
 - [ ] 全文精翻：`docs/glossary/` 中标注「已生成待精翻」的页面。**核对方法**：`grep -rl "glossary-stub" docs/glossary/ | wc -l` 得剩余数；精翻时删除页内 `glossary-stub` 注释块、补全文、保留 frontmatter。
 - 已精翻（13）：`address` `private-key` `public-key` `seed-phrase` `wallet` `node` `mining` `transaction` `block` `blockchain` `hash` `utxo-unspent-transaction-output` `lightning-network`（剩余 463 条，核对：`grep -rl "glossary-stub" docs/glossary/ | wc -l`）
-- 建议第一批（高频词优先）：`address` `private-key` `public-key` `seed-phrase` `wallet` `node` `mining` `transaction` `block` `blockchain` `utxo-unspent-transaction-output` `fee-estimation` `lightning-network` `hash` `halving` `cold-storage` `hot-wallet` `multisig` `bech32` `bip-39` `consensus` `difficulty` `confirmation` `mempool` `fork` `sat` `whitepaper`
+
+### 术语全文精翻 · 续接批次计划（新会话照此推进）
+
+> 工作流（读源文件→重写页面文件→相关词条链接）见 `AGENTS.md`「术语表工作流 · 全文精翻」。原「建议第一批」中有 7 个 slug 在源数据中不存在（cold-storage、hot-wallet、bech32、consensus、confirmation、sat、halving 均为概念名而非真实 slug），已用真实 slug 修正。
+
+- **节奏**：每批一个 commit，信息格式 `翻译：术语全文精翻 Bx <主题>（N 条）`；push 前跑 `STRICT_LINKS=1 npm run build`；每批完成立即更新「已精翻」清单与本表。
+- **待翻清单以 stub 实时扫描为准**（跳过已翻、主题间重复的词先翻先跳过），枚举命令模板：
+
+  ```bash
+  grep -rl "glossary-stub" docs/glossary --include="*.md" | sed 's|.*glossary/||;s|\.md||' | grep -E '<关键词正则>'
+  ```
+
+| 批次 | 主题 | slug 匹配关键词 | 约数 |
+| --- | --- | --- | --- |
+| B2 | 高频核心补齐 | （固定清单）`fee-estimation` `multisig` `bip-39` `difficulty` `mempool` `fork` `whitepaper` `halving-halvening` `bech32m` `bip-173-bech32` `consensus-parameter` `satoshi-unit` | 12 |
+| B3 | 钱包与密钥安全 | `seed\|mnemonic\|key\|wallet\|custod\|backup\|passphrase\|signature\|address\|cold\|multisig\|recovery\|entropy\|derivation\|xpub\|wif\|paper` | ~58 |
+| B4 | 闪电网络 | `lightning\|htlc\|channel\|bolt\|lnurl\|gossip\|onion\|preimage\|invoice\|sphinx\|autopilot\|wumbo\|penalty` | ~40 |
+| B5 | 挖矿与共识 | `mining\|miner\|hashrate\|difficulty\|proof\|consensus\|fork\|block-\|nonce\|asic\|pool\|subsidy\|halving\|retarget\|orphan\|mev` | ~68 |
+| B6 | 隐私与合规 | `coinjoin\|privacy\|mixer\|wasabi\|samourai\|tumbler\|cluster\|heuristic\|analysis\|fingerprint\|kyc\|aml\|chain-` | ~15 |
+| B7 | 字母序扫尾 | 不匹配上述关键词的其余全部剩余词条，每 50 条一批 | ~290 |
+
+（各批数量按 2026-09-12 状态估算，跨批重复词以先遇到先翻、翻完自动从后续批消失为准。）
 
 ### 原创示意图（docs/public/images/）
 
@@ -88,7 +109,7 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 
 - [x] Cloudflare Pages 首次部署 + cleanUrls 验证 ✅ 2026-09-12 完成（wrangler 直传，cleanUrls 正常）
 - [ ] 原站 Svelte 交互组件（7 个：SupplyChart、HalvingCountdown、UnitsConverter、KeySpaceVisualizer、MempoolHistogram、DifficultyClock、UnitsVisualization）可复刻为 Vue 组件增强对应页面；frontmatter 中原引用已删除
-- [ ] 术语全文精翻（长期任务，按上面建议批次推进即可）
+- [ ] 术语全文精翻（长期任务，按「glossary/ 术语表」章节的批次计划 B2→B7 逐批推进）
 - [ ] `pages/terms.md`（源仓库的 Terms 页）已并入 `/about` 与术语表，不再单独翻译——如需可补
 - [ ] 移动端与暗色模式抽查（已按 VitePress 默认主题设计，理论上无碍）
 
