@@ -2,7 +2,7 @@
 
 > **给接手的 AI / 开发者：本文件是唯一可信进度源。完成任何条目后，立刻回来更新这里的 checkbox 和统计数字，并同步推送到 GitHub。** 开发规范见 [AGENTS.md](AGENTS.md)。
 >
-> 最后更新：2026-09-12（首期开发完成：全站内容主体上线；后续会话继续术语精翻）
+> 最后更新：2026-09-12（首期开发完成 + Cloudflare Pages 上线 https://btc-wiki-7oo.pages.dev；后续会话继续术语精翻）
 
 ## 总览
 
@@ -16,7 +16,7 @@
 | glossary/ 术语表（全文精翻） | 476 | 0 | ⏳ 长期任务，见下方清单 |
 | 原创中文示意图 | 5 | 5 | ✅ 首批完成（可继续扩充） |
 | 交互组件（原站 Svelte widget 的 Vue 复刻） | 7 | 0 | ⏳ 未开始，非必需 |
-| Cloudflare Pages 部署 | — | 0 | ⏳ 需用户在 Dashboard 操作 |
+| Cloudflare Pages 部署 | — | ✅ | 已上线 https://btc-wiki-7oo.pages.dev |
 
 ## 构建与部署
 
@@ -28,8 +28,10 @@ npm run glossary:gen           # 重新生成未翻译的术语页（不覆盖�
 npm run glossary:sidebar       # 重新生成术语侧边栏
 ```
 
-- Cloudflare Pages：Dashboard 连接 GitHub 仓库 `lovexw/btc-wiki`，构建命令 `npm run build`，输出目录 `docs/.vitepress/dist`。Node 版本设 20+（环境变量 `NODE_VERSION=20`）。
-- **部署后需人工检查一次 cleanUrls 生成的无扩展名 URL 在 CF Pages 上是否正常**（正常应无问题；若 404，把 `docs/.vitepress/config.mts` 里 `cleanUrls: true` 改为 `false` 再构建）。
+- Cloudflare Pages：**wrangler 直传部署**（未走 Dashboard 连 GitHub）。命令：`npm run build && npx wrangler pages deploy docs/.vitepress/dist --project-name=btc-wiki --branch=main`。生产域名 https://btc-wiki-7oo.pages.dev 。
+  - wrangler 需 ≥ 4.131.1：旧版 4.38.0 上传 1500+ 文件时会大量 EPIPE 报错（已全局升级，若换机器注意）。
+  - `docs/.vitepress/dist` 里出现过 `xxx 2.svg` 之类的 Finder 垃圾副本（仅构建产物，源文件干净），部署前如发现可 `find docs/.vitepress/dist -name "* 2*" -delete`。
+- cleanUrls 生成的无扩展名 URL 已在 CF Pages 上验证正常（`/glossary/private-key`、`/about` 均 308→200），无需改配置。
 - 旧版纯 HTML 站点完整保留在 `legacy/html-site` 分支。
 
 ## 关键决策记录（不要推翻，除非有充分理由）
@@ -82,7 +84,7 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 
 ## 已知问题 / 待办
 
-- [ ] Cloudflare Pages 首次部署 + cleanUrls 验证（需用户 GitHub 授权 CF，AI 无法代操作）
+- [x] Cloudflare Pages 首次部署 + cleanUrls 验证 ✅ 2026-09-12 完成（wrangler 直传，cleanUrls 正常）
 - [ ] 原站 Svelte 交互组件（7 个：SupplyChart、HalvingCountdown、UnitsConverter、KeySpaceVisualizer、MempoolHistogram、DifficultyClock、UnitsVisualization）可复刻为 Vue 组件增强对应页面；frontmatter 中原引用已删除
 - [ ] 术语全文精翻（长期任务，按上面建议批次推进即可）
 - [ ] `pages/terms.md`（源仓库的 Terms 页）已并入 `/about` 与术语表，不再单独翻译——如需可补
