@@ -169,6 +169,18 @@ export default defineConfig({
     externalLinkIcon: true,
   },
 
+  // plugin-vue 5.2+ 构建模式默认把绝对路径 src 编译成模块 import，
+  // 而 /images/* 位于 public 目录、Rollup 无法解析，会导致 build 失败，故显式关闭
+  vite: {
+    vue: {
+      template: {
+        transformAssetUrls: {
+          includeAbsolute: false,
+        },
+      },
+    },
+  },
+
   markdown: {
     lineNumbers: false,
   },
