@@ -32,6 +32,8 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
   - wrangler 需 ≥ 4.131.1：旧版 4.38.0 上传 1500+ 文件时会大量 EPIPE 报错（已全局升级，若换机器注意）。
   - `docs/.vitepress/dist` 里出现过 `xxx 2.svg` 之类的 Finder 垃圾副本（仅构建产物，源文件干净），部署前如发现可 `find docs/.vitepress/dist -name "* 2*" -delete`。
 - cleanUrls 生成的无扩展名 URL 已在 CF Pages 上验证正常（`/glossary/private-key`、`/about` 均 308→200），无需改配置。
+- 根目录 `.vitepress/config.mts` 是 **CI 兜底配置**：若 CI 构建命令写成 `npx vitepress build`（缺 `docs` 参数），会在仓库根构建、读不到 docs 配置，public 图片被误编译为模块 import 而报错（2026-09-12 实际发生）。兜底配置复用 docs 配置并覆盖 srcDir/outDir/cacheDir，使该命令也能正确产出；不影响 `npm run build`。
+- 观察到一次 Git 自动构建失败即源于上述缺参命令，且该 Git 集成不在 wrangler CLI 登录的账号的任何 Pages 项目上（疑似另一个 Cloudflare 账号），CLI 无法代改其构建配置，故采用仓库侧兜底方案。
 - 旧版纯 HTML 站点完整保留在 `legacy/html-site` 分支。
 
 ## 关键决策记录（不要推翻，除非有充分理由）
