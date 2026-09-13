@@ -120,7 +120,7 @@
 "burn-address": {"t":"燃烧地址（Burn Address）","s":"无人掌握私钥的地址，发往那里的 BTC 实质上退出流通。"},
 "byzantine-fault-tolerance": {"t":"拜占庭容错（Byzantine Fault Tolerance）","s":"即使部分参与者作恶或行为异常，系统仍能正确运行的能力。"},
 "cbdc-central-bank-digital-currency": {"t":"央行数字货币（CBDC）","s":"由国家发行、中央机构管理的数字货币——与比特币的去中心化模型形成对照。"},
-"celsius-genesis-3ac-cluster": {"t":"Celsius、Genesis 与三箭资本（2022 传染链）","s":"2022 年加密借贷机构与对冲基金的连环崩塌——三箭资本、Celsius、Genesis——一个借款人违约， cascade 式击穿悄悄把客户存款放贷出去的机构。"},
+"celsius-genesis-3ac-cluster": {"t":"Celsius、Genesis 与三箭资本（2022 传染链）","s":"2022 年加密借贷机构与对冲基金的连环崩塌——三箭资本、Celsius、Genesis：一个借款人违约，连环击穿悄悄把客户存款放贷出去的机构。"},
 "centralized-exchange-cex": {"t":"中心化交易所（CEX）","s":"由单一公司运营的加密交易平台，托管用户资金、内部撮合订单。"},
 "chain-analysis": {"t":"链上分析（Chain Analysis）","s":"检查链上交易、地址与模式，以识别或关联用户活动。"},
 "chain-flag-day": {"t":"链上旗日（Chain Flag Day）","s":"预先选定的日期或区块高度，节点从此开始执行新共识规则——常见于用户激活分叉。"},
