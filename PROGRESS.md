@@ -31,6 +31,7 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 - Cloudflare Pages：**Git 集成自动构建为主，wrangler 直传为兜底**。生产域名 https://wiki.btchao.com （自定义域），https://btc-wiki.pages.dev 为项目默认域（2026-09-13 实测变更，详见下条）。
   - **2026-09-13 现状**：当前 wrangler 账号（0471666@gmail.com）的项目是 `000-wiki-btchao-com`（域名 btc-wiki.pages.dev + wiki.btchao.com），已接入 Git 集成——push 到 main 后约 1 分钟自动构建上线（commit 9a9614c 实测）；旧说明中的项目名 `btc-wiki`（btc-wiki-7oo.pages.dev）在本账号不存在，该域名内容已落后（仍是 stub），后续以 wiki.btchao.com / btc-wiki.pages.dev 为准。
   - 手动部署命令（Git 构建失败时兜底）：`npm run build && npx wrangler pages deploy docs/.vitepress/dist --project-name=000-wiki-btchao-com --branch=main`（本机 npx/npm 不在 PATH 时用 `node /usr/local/lib/node_modules/npm/bin/npm-cli.js exec -- wrangler ...`）。
+  - **2026-09-13 事故记录**：B7 第二批 commit `64e61b8` 的 Git 自动构建在 CF 侧失败（wrangler `pages deployment list` 显示 Failure；本地 STRICT_LINKS 构建通过，纯 .md 变更，原因不明、疑似 CF 侧瞬时故障），已用上述 wrangler 兜底命令手动上线（部署 `cbe5a10f`，线上验证 OK）。下批推送后若 Git 构建仍失败，照此兜底即可；若恢复正常则无需理会。
   - Git 自动构建产出的全站 476+ 页面已抽查：journey、rabbit-holes、SVG 图片、395 个 stub 术语页全部 200 正常（2026-09-13 实测），说明构建命令（可能仍是缺 `docs` 参数的 `npx vitepress build`）已被根目录兜底配置救活。
 - cleanUrls 生成的无扩展名 URL 已在 CF Pages 上验证正常（`/glossary/private-key`、`/about` 均 308→200），无需改配置。
 - 根目录 `.vitepress/config.mts` 是 **CI 兜底配置**：若 CI 构建命令写成 `npx vitepress build`（缺 `docs` 参数），会在仓库根构建、读不到 docs 配置，public 图片被误编译为模块 import 而报错（2026-09-12 实际发生）。兜底配置复用 docs 配置并覆盖 srcDir/outDir/cacheDir，使该命令也能正确产出；不影响 `npm run build`。
