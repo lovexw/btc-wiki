@@ -24,41 +24,65 @@ title: 比特币单位：从聪到 BTC
 
 ## 3. 完整刻度
 
-比特币有 8 位小数，从 BTC 到聪共九个「位置」。从大到小逐个过：
+比特币有 8 位小数，从 BTC 到聪共九个「位置」。下面的可视化展示每个位置代表什么——橙色实心圆是该单位所在的小数位和比它更细的所有位；描边空心圆是比它更粗的高面额位：
+
+<UnitsVisualization unit="finney" />
+
+以 Finney 为例：它落在第 4 位（0.0001 BTC = 10,000 聪）。左边四个描边圆代表 BTC、dBTC、cBTC、mBTC——都是不属于这个单位的更粗面额。从 Finney 位开始的五个实心圆，代表这个单位本身以及往下直到聪的所有位置。
+
+从大到小逐个过：
 
 ### BTC（Bitcoin）—— 整币
+
+<UnitsVisualization unit="btc" :show-label="false" />
 
 基础单位。等于 1 亿聪。用于行情报价（「BTC 现在 $87,000」）、大额转账（「我买了 0.5 BTC」）以及一切金额超过几百美元的讨论。总量永远不超过 2100 万（见[供应量专题](/rabbit-holes/supply)）。
 
 ### dBTC（ deci-Bitcoin）—— 几乎无人用
 
+<UnitsVisualization unit="dbtc" :show-label="false" />
+
 十分之一 BTC。理论上有名字，实践中没人用。见到它通常在学术文献或求全型文档里。
 
 ### cBTC（centi-Bitcoin）—— 也几乎无人用
+
+<UnitsVisualization unit="cbtc" :show-label="false" />
 
 百分之一 BTC，即 100 万聪。理论上的比特币「分」。实际同样无人使用——想要这个量级的人直接写 0.01 BTC。
 
 ### mBTC（毫比特币）
 
+<UnitsVisualization unit="mbtc" :show-label="false" />
+
 千分之一 BTC，即 10 万聪。有一定采用度：按典型比特币价格，1 mBTC 约等于一顿饭，作为展示单位相当合理。一些钱包和商家用 mBTC 代替 BTC，避免显示一串前导零。
 
 ### Finney（芬尼）
+
+<UnitsVisualization unit="finney" :show-label="false" />
 
 万分之一 BTC，即 1 万聪。以密码学家 Hal Finney 命名——2009 年 1 月他收到了中本聪发出的第一笔比特币转账，很可能是第二个运行比特币软件的人。这个名字是社群纪念性的，多数钱包里见不到。值得知道它，是因为 Hal 这个人值得知道。
 
 ### 无名（10^-5 BTC）
 
+<UnitsVisualization unit="p5" :show-label="false" />
+
 十万分之一 BTC，即 1000 聪。没有被广泛接受的名字。位置存在，社会共识不存在。
 
 ### uBTC（微比特币）—— 又名「bits」
+
+<UnitsVisualization unit="ubtc" :show-label="false" />
 
 百万分之一 BTC，即 100 聪。[BIP 176](https://github.com/bitcoin/bips/blob/master/bip-0176.mediawiki) 提议叫它「bits」——更短更好记。该提案在一些钱包（Coinbase 曾一度支持）有过真实采用，但基本输给了「聪」这个小额单位的首选地位。
 
 ### 无名（10^-7 BTC）
 
+<UnitsVisualization unit="p7" :show-label="false" />
+
 千万分之一 BTC，即 10 聪。和 10^-5 位一样，有位置没名字。多数钱包根本不允许你按这个精度输入金额。
 
 ### 聪（satoshi）—— 最小单位
+
+<UnitsVisualization unit="sat" :show-label="false" />
 
 一亿分之一 BTC。原子单位；主链上不存在更小的交易数额。以中本聪命名。
 
@@ -81,6 +105,10 @@ title: 比特币单位：从聪到 BTC
 | Satoshi | sat | 0.00000001 | $0.01 |
 
 到那个价位：1 聪 = 1 美分，1 bit = 1 美元，1 mBTC = 1000 美元。命名的直觉性会突然上线。有人主张那才是「世界开始以聪计价」的时刻——说得通，但没法预测。
+
+自己试一试——在任意单位里输入一个金额，看其余单位实时联动：
+
+<UnitsConverter />
 
 ## 5. 为什么是 8 位小数
 

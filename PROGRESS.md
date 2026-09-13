@@ -2,7 +2,7 @@
 
 > **给接手的 AI / 开发者：本文件是唯一可信进度源。完成任何条目后，立刻回来更新这里的 checkbox 和统计数字，并同步推送到 GitHub。** 开发规范见 [AGENTS.md](AGENTS.md)。
 >
-> 最后更新：2026-09-13（📈 **台账勘误**：核实发现 rabbit-holes 17 篇深度专题早在 2026-09-12 已全部翻译完成（commit `20e35a1`「深度专题 17/17 全部完成」+ `4d22c63`），但 PROGRESS.md 一直误记 0/17——两个内容 commit 当时均未同步台账。本次已逐篇对照源文件核验（标题结构、结尾完整性、外链政策），确认全部完成，台账勘误为 17/17 ✅。同时按 B7 确立的外链政策清理了 3 处 NIST csrc.nist.gov 外链（正文表述保留）。当前全部翻译任务已完成，下一可选项：交互组件复刻（7 个））
+> 最后更新：2026-09-13（🚀 **交互组件复刻完成**：原站 7 个 Svelte 链上数据组件已全部复刻为 Vue 并上线 6 个页面——数据源为原站同款 chainquery.com `/api/edu/*` 公开端点（CORS 全开，实测可用）。同日早些时候完成**台账大勘误**：rabbit-holes 17 篇实为 2026-09-12 已全部完成（commit `20e35a1`），当时漏更新台账导致误记 0/17，已逐篇核验勘误。至此**全部翻译与组件任务完成**，剩余可选项仅：为 rabbit-holes 补充更多原创示意图）
 
 ## 总览
 
@@ -15,7 +15,7 @@
 | glossary/ 术语表（标题+短定义） | 476 | 476 | ✅ 全部完成并生成页面 |
 | glossary/ 术语表（全文精翻） | 476 | 476 | ✅ **全部完成**（B7 六批字母序扫尾收官，2026-09-13） |
 | 原创中文示意图 | 5 | 5 | ✅ 首批完成（可继续扩充） |
-| 交互组件（原站 Svelte widget 的 Vue 复刻） | 7 | 0 | ⏳ 未开始，非必需 |
+| 交互组件（原站 Svelte widget 的 Vue 复刻） | 7 | 7 | ✅ 全部完成（2026-09-13，浏览器实测通过） |
 | Cloudflare Pages 部署 | — | ✅ | 已上线 https://wiki.btchao.com（旧域名 btc-wiki-7oo.pages.dev / btc-wiki.pages.dev） |
 
 ## 构建与部署
@@ -94,7 +94,7 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 
 ### B7 断点（2026-09-13 🎉 **全部完成**——B7 六批 258 条字母序扫尾收官，术语全文精翻 476/476）
 
-> **术语表全文精翻任务已完结。** 下方保留批次记录备查。（勘误：此前此处写的下一任务「rabbit-holes 17 篇翻译」经 2026-09-13 核实其实早已完成，见「翻译进度明细」；当前剩余可选项为：交互组件复刻（7 个 Svelte→Vue）、移动端与暗色模式抽查、为 rabbit-holes 补充更多原创示意图。）
+> **术语表全文精翻任务已完结。** 下方保留批次记录备查。（勘误：此前此处写的下一任务「rabbit-holes 17 篇翻译」经 2026-09-13 核实其实早已完成，见「翻译进度明细」；交互组件复刻与移动端/暗色抽查也已于同日完成，见「交互组件复刻」小节。当前剩余可选项：为 rabbit-holes 各篇补充更多原创示意图（supply/halvings/mining/mempool 等篇目前无图）。）
 
 - **B7 第一批（前 50 条）✅ 2026-09-13 完成**（`absolute-fee` 至 `bip-8`，全部清单见上方「已精翻」B7 段）。
 - **B7 第二批（50 条）✅ 2026-09-13 完成**（`bip-85` 至 `corrupted-chain-state`）。
@@ -134,7 +134,20 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 
 （各批数量按 2026-09-12 状态估算，跨批重复词以先遇到先翻、翻完自动从后续批消失为准。）
 
-### 原创示意图（docs/public/images/）
+### 交互组件复刻（7/7 ✅ 2026-09-13 完成）
+
+> 数据源与原站相同：`https://chainquery.com/api/edu/*`（公开教育端点，`access-control-allow-origin: *`，浏览器直连无 CORS 问题；实测 2026-09-13 全部 200）。组件代码在 `docs/.vitepress/theme/components/`，公共逻辑在 `theme/chainquery.ts`（useChainQuery 组合式函数：拉取 + stale 标记 + 定时刷新），公共样式 `.chainquery-widget` 系列在 `theme/style.css`。全部经浏览器实测：数据渲染、倒计时跳动、换算联动、滑块交互、暗色模式、375px 移动端无横向溢出。
+
+- [x] `SupplyChart.vue` 实时供应量（supply.md）——流通量 vs 20,999,999.9769 渐近上限进度条 + 年增发/通胀率；5 分钟刷新
+- [x] `HalvingCountdown.vue` 减半倒计时（halvings.md）——天/时/分/秒每秒跳动 + 当前/减半区块/剩余块数/预计日期 + 补贴 3.125→1.5625 BTC；60 秒刷新
+- [x] `DifficultyClock.vue` 难度调整期（mining.md）——2016 块进度条 + 当前难度（科学计数法）+ 预计调整幅度（上调红/下调绿）；60 秒刷新
+- [x] `MempoolHistogram.vue` 实时内存池（mempool.md + mining.md）——概要四卡 + 按费率带分组的体积条（**对数比例**，空带过滤；此为对原站的改进——原站线性归一化导致体积小的费率带不可见）；30 秒刷新
+- [x] `UnitsConverter.vue` 单位换算器（bitcoin-units.md）——BTC/mBTC/Finney/μBTC/聪互算 + chainquery 实时 USD 参考价；换算纯本地
+- [x] `UnitsVisualization.vue` 单位点阵图（bitcoin-units.md ×10 处）——9 个圆点表示该单位覆盖的小数位，橙色实心=该单位及更细位、描边=更高面额位
+- [x] `KeySpaceVisualizer.vue` 密钥空间可视化（key-space.md）——2^8→2^256 十档滑块+点选，每档配现实类比
+
+**踩坑记录（后续组件开发必读）**：`useChainQuery` 的 fetch 与 `setInterval` 必须放在 `onMounted` 内——VitePress 构建期 SSR 渲染每页时 `onUnmounted` 不会触发，setup 顶层 `setInterval` 会把构建进程挂死（2026-09-13 实测：构建卡住 5 分钟+不退出，改到 onMounted 后 78s 正常完成）。
+**插入位置对照**（源仓库 mdx 的 `<Xxx client:load />` 行）：supply L123 / halvings L33 / mining L83+L115 / mempool L112 / key-space L52 / bitcoin-units L49+L59-107(9 处)+L145。
 
 - [x] `journey-inflation.svg` 第 1 章购买力稀释（journey/why-money-is-broken）
 - [x] `journey-network-topology.svg` 央行 vs 比特币网络拓扑（第 2 章 what-bitcoin-actually-is 与 rabbit-holes/decentralization 共用；2026-09-13 勘误：此处原误记为 `journey-bitcoin-stack.svg`，该文件从未存在）
@@ -149,10 +162,10 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 
 - [x] Cloudflare Pages 首次部署 + cleanUrls 验证 ✅ 2026-09-12 完成（wrangler 直传，cleanUrls 正常）
 - [x] **台账大勘误 ✅ 2026-09-13 完成**：rabbit-holes 17 篇实际 2026-09-12 已全部翻译完成但台账误记 0/17，已逐篇核验并勘误（详见「翻译进度明细」勘误说明）；顺带清理 3 处 NIST 外链、修正示意图清单笔误。**教训已入册**：内容 commit 必须同步更新台账（会话工作流程第 4 步），避免再次出现账实分离。
-- [ ] 原站 Svelte 交互组件（7 个：SupplyChart、HalvingCountdown、UnitsConverter、KeySpaceVisualizer、MempoolHistogram、DifficultyClock、UnitsVisualization）可复刻为 Vue 组件增强对应页面；frontmatter 中原引用已删除（页面中已无组件引用，可安全开工）
+- [ ] 原站 Svelte 交互组件复刻 ✅ 2026-09-13 全部完成（7/7，详见「交互组件复刻」小节；组件在 `docs/.vitepress/theme/components/`，数据源 chainquery.com/api/edu/*，浏览器实测通过）
 - [x] 术语全文精翻 ✅ 2026-09-13 全部完成（476/476，B2→B7 六批扫尾，`grep -rl "glossary-stub" docs/glossary/ | wc -l` = 0）
 - [ ] `pages/terms.md`（源仓库的 Terms 页）已并入 `/about` 与术语表，不再单独翻译——如需可补
-- [ ] 移动端与暗色模式抽查（已按 VitePress 默认主题设计，理论上无碍）
+- [ ] 移动端与暗色模式抽查 ✅ 2026-09-13 完成（借组件上线之机实测：暗色模式组件配色正确（bg rgb(27,27,31)、品牌橙 #f7931a 提亮）、375px 移动端组件无横向溢出、统计网格正确塌缩单列、倒计时四格保持 4 列）
 - [ ] 源仓库若有新增内容（新 glossary 词条/新 rabbit-hole 篇目）需同步翻译
 
 ## 会话工作流程（每次 AI 会话必做）
