@@ -2,7 +2,7 @@
 
 > **给接手的 AI / 开发者：本文件是唯一可信进度源。完成任何条目后，立刻回来更新这里的 checkbox 和统计数字，并同步推送到 GitHub。** 开发规范见 [AGENTS.md](AGENTS.md)。
 >
-> 最后更新：2026-09-13（术语精翻 B3 批全部完成 56/56，累计 81/476；下批为 B4 闪电网络，断点详情见下方「B4 断点」）
+> 最后更新：2026-09-13（术语精翻 B4 闪电网络批全部完成 49/49，累计 130/476；下批为 B5 挖矿与共识，断点详情见下方「B5 断点」）
 
 ## 总览
 
@@ -13,7 +13,7 @@
 | rabbit-holes/ 深度专题 | 17 | 0 | ⏳ 待翻译 |
 | pages/ 实用页面（privacy/security/node） | 3 | 3 | ✅ 重写完成（本站语境） |
 | glossary/ 术语表（标题+短定义） | 476 | 476 | ✅ 全部完成并生成页面 |
-| glossary/ 术语表（全文精翻） | 476 | 81 | ⏳ 进行中，按下方批次计划推进 |
+| glossary/ 术语表（全文精翻） | 476 | 130 | ⏳ 进行中，按下方批次计划推进 |
 | 原创中文示意图 | 5 | 5 | ✅ 首批完成（可继续扩充） |
 | 交互组件（原站 Svelte widget 的 Vue 复刻） | 7 | 0 | ⏳ 未开始，非必需 |
 | Cloudflare Pages 部署 | — | ✅ | 已上线 https://wiki.btchao.com（旧域名 btc-wiki-7oo.pages.dev / btc-wiki.pages.dev） |
@@ -74,27 +74,28 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 - [x] 476 条「标题 + 短定义」中文翻译（在 `tools/glossary-zh.json`，已生成全部页面）
 - [x] 476 条侧边栏（按首字母分组折叠）
 - [ ] 全文精翻：`docs/glossary/` 中标注「已生成待精翻」的页面。**核对方法**：`grep -rl "glossary-stub" docs/glossary/ | wc -l` 得剩余数；精翻时删除页内 `glossary-stub` 注释块、补全文、保留 frontmatter。
-- 已精翻（81）：`address` `private-key` `public-key` `seed-phrase` `wallet` `node` `mining` `transaction` `block` `blockchain` `hash` `utxo-unspent-transaction-output` `lightning-network`；B2 批（12）：`fee-estimation` `multisig` `bip-39` `difficulty` `mempool` `fork` `whitepaper` `halving-halvening` `bech32m` `bip-173-bech32` `consensus-parameter` `satoshi-unit`；B3 批第一批（26）：`address-clustering` `address-derivation-path` `address-indexing` `address-reuse` `b32-address` `burn-address` `green-address` `stealth-address` `vanity-address` `custodial-lightning-wallet` `custodial-wallet` `deterministic-wallet` `gui-wallet` `hardware-wallet` `hd-wallet-hierarchical-deterministic-wallet` `hdm-multi-signature-hd-wallet` `hierarchical-deterministic-wallet` `watch-only-wallet` `wasabi-wallet` `hardware-seed-vault` `inheritance-seed-backup` `mnemonic-entropy-bits` `mnemonic-password` `seed-entropy-mixer` `seed-tool` `paper-wallet`；B3 批第二批（30，2026-09-13 完成）：`exchange-api-key` `key-aggregation` `key-generation-ceremony` `key-pool` `key-rotation` `key-split` `key-wiping` `wallet-import-format-wif` `xpub-extended-public-key` `adapter-signature` `ecdsa-elliptic-curve-digital-signature-algorithm` `low-r-signatures` `low-s-signatures` `mono-signature` `partial-signature` `proof-keys` `quorum-signatures` `schnorr-signature` `signature-aggregation` `signature-clipping` `p2pk-pay-public-key` `p2pkh-pay-public-key-hash` `p2wpkh-pay-witness-public-key-hash` `k-k-multisig` `hierarchical-multisig` `lurking-wife-mode` `not-your-keys-not-your-coins` `paper-hands` `self-custody` `static-channel-backup-scb`（剩余 395 条，核对：`grep -rl "glossary-stub" docs/glossary/ | wc -l`）
+- 已精翻（130）：`address` `private-key` `public-key` `seed-phrase` `wallet` `node` `mining` `transaction` `block` `blockchain` `hash` `utxo-unspent-transaction-output` `lightning-network`；B2 批（12）：`fee-estimation` `multisig` `bip-39` `difficulty` `mempool` `fork` `whitepaper` `halving-halvening` `bech32m` `bip-173-bech32` `consensus-parameter` `satoshi-unit`；B3 批（56）：`address-clustering` `address-derivation-path` `address-indexing` `address-reuse` `b32-address` `burn-address` `green-address` `stealth-address` `vanity-address` `custodial-lightning-wallet` `custodial-wallet` `deterministic-wallet` `gui-wallet` `hardware-wallet` `hd-wallet-hierarchical-deterministic-wallet` `hdm-multi-signature-hd-wallet` `hierarchical-deterministic-wallet` `watch-only-wallet` `wasabi-wallet` `hardware-seed-vault` `inheritance-seed-backup` `mnemonic-entropy-bits` `mnemonic-password` `seed-entropy-mixer` `seed-tool` `paper-wallet` `exchange-api-key` `key-aggregation` `key-generation-ceremony` `key-pool` `key-rotation` `key-split` `key-wiping` `wallet-import-format-wif` `xpub-extended-public-key` `adapter-signature` `ecdsa-elliptic-curve-digital-signature-algorithm` `low-r-signatures` `low-s-signatures` `mono-signature` `partial-signature` `proof-keys` `quorum-signatures` `schnorr-signature` `signature-aggregation` `signature-clipping` `p2pk-pay-public-key` `p2pkh-pay-public-key-hash` `p2wpkh-pay-witness-public-key-hash` `k-k-multisig` `hierarchical-multisig` `lurking-wife-mode` `not-your-keys-not-your-coins` `paper-hands` `self-custody` `static-channel-backup-scb`；B4 批闪电网络（49，2026-09-13 完成）：`payment-channel` `state-channel` `lightning-channel` `lightning-channel-capacity` `balanced-channel-lightning` `inactive-channel` `delayed-payment-channel` `escrowed-lightning-channel` `lightning-channel-splicing` `audiobook-model-lightning` `htlc-hashed-time-locked-contract` `htlc-invoice` `htlc-preimage-manager` `lightning-invoice` `lightning-refund-invoice` `lightning-payment` `atomic-multi-path-payment-amp` `lightning-routing` `routing-node` `onion-routing-lightning` `lightning-sphinx` `gossip-protocol-lightning` `lightning-gossip-pruning` `peer-discovery` `peer-bookmark` `peer-management` `lightning-node` `lightning-node-alias` `core-lightning-c-lightning` `lightning-network-daemon-lnd` `bridge-node-lightning` `autopilot-lightning` `lightning-network-penalty` `penalty-transaction` `delayed-justice-transaction` `fraudulent-channel-close` `bolt` `bolt-11` `wumbo-channels-lightning` `jamming-attack-ln` `jammed-htlc-detector` `lightning-probe` `lightning-anchor-commitment` `churn-lightning` `lockup-period-lightning` `eltoo` `submarine-swap` `loop-inout` `liquidity-ads`（剩余 346 条，核对：`grep -rl "glossary-stub" docs/glossary/ | wc -l`）
 
-### B4 断点（2026-09-13，B3 已全部完成；B4 闪电网络共 49 条，未开始）
+### B5 断点（2026-09-13，B4 已全部完成；B5 挖矿与共识共 67 条，未开始）
 
-> 下个会话直接按下方清单分小组推进，不用重新枚举。源文件在 `/Users/xw/.zcode/workspace/learnbitcoin-content/glossary/<slug>.md`，本会话未读过，需现读。
+> 下个会话直接按下方清单分小组推进，不用重新枚举。源文件在 `/Users/xw/.zcode/workspace/learnbitcoin-content/glossary/<slug>.md`，本会话未读过，需现读。`difficulty`（B2）、`halving-halvening`（B2）、`fork`（B2）、`mining`（首批）等词已翻，不在此列。
 
-- **B4 待翻清单（49 条，按主题分组；同组词之间概念高度关联，按组翻译省 token）**：
-  - 通道基础（10）：`payment-channel` `state-channel` `lightning-channel` `lightning-channel-capacity` `balanced-channel-lightning` `inactive-channel` `delayed-payment-channel` `escrowed-lightning-channel` `lightning-channel-splicing` `audiobook-model-lightning`
-  - HTLC 与支付（7）：`htlc-hashed-time-locked-contract` `htlc-invoice` `htlc-preimage-manager` `lightning-invoice` `lightning-refund-invoice` `lightning-payment` `atomic-multi-path-payment-amp`
-  - 路由与网络层（9）：`lightning-routing` `routing-node` `onion-routing-lightning` `lightning-sphinx` `gossip-protocol-lightning` `lightning-gossip-pruning` `peer-discovery` `peer-bookmark` `peer-management`
-  - 节点与软件（6）：`lightning-node` `lightning-node-alias` `core-lightning-c-lightning` `lightning-network-daemon-lnd` `bridge-node-lightning` `autopilot-lightning`
-  - 惩罚与风险（4）：`lightning-network-penalty` `penalty-transaction` `delayed-justice-transaction` `fraudulent-channel-close`
-  - 协议与攻击（5）：`bolt` `bolt-11` `wumbo-channels-lightning` `jamming-attack-ln` `jammed-htlc-detector`（注：`jammed-htlc-detector` 为检测工具词条，与 `jamming-attack-ln` 同读）
-  - 运营杂项（5）：`lightning-probe` `lightning-anchor-commitment` `churn-lightning` `lockup-period-lightning` `eltoo`
-  - 链上/链下兑换（3）：`submarine-swap` `loop-inout` `liquidity-ads`
+- **B5 待翻清单（67 条，按主题分组）**：
+  - 挖矿基础（14）：`proof-work-pow` `hash-puzzle` `hash-rate` `hash-rate-derivative` `nonce` `nonce-exhaustion` `block-header` `block-height` `block-time` `block-reward` `block-subsidy` `mining-subsidy` `merkle-proof` `merkle-inclusion-proof`
+  - 矿工与矿机（13）：`miner` `cpu-mining` `gui-miner` `retail-mining` `mining-rig` `mining-software` `mining-algorithm` `mining-front-end` `proprietary-mining-firmware` `asic-application-specific-integrated-circuit` `asic-resistance` `asicboost` `miner-capitulation`
+  - 矿池（6）：`mining-pool` `pooled-mining` `pool-hopping` `merged-mining` `mining-colocation` `geographic-mining-distribution`
+  - 区块传播与共识（12）：`block-propagation` `competitive-block-propagation` `competitive-mining` `orphan-block` `miner-orphan-rate` `fork-detection` `fork-watcher` `block-explorer` `block-size` `difficulty-retargeting` `mining-centralization` `hidden-miner-tax`
+  - 能源（4）：`energy-fud` `stranded-energy` `curtailment` `methane-mitigation-mining`
+  - MEV 与证明（3）：`miner-extractable-value-mev` `proof-of-reserves` `fraud-proof`
+  - 扩容战争与软分叉部署（15）：`block-size-war` `bip-101-increase-block-size` `bip-102-2mb-block-size` `bip-9-versionbits` `bip-91` `bip-148-uasf` `bip-34` `bip-65-opchecklocktimeverify` `bip-170-txout-proof` `bip-35-mempool-message` `bip-36-merkle-block-request` `checklocktimeverify-cltv` `deployment-threshold-soft-fork` `locked-period-soft-fork` `soft-fork`
+- **注意**：清单按 `grep -E 'mining|miner|hashrate|difficulty|proof|consensus|fork|block-|nonce|asic|pool|subsidy|halving|retarget|orphan|mev'` 实扫并手工剔除已翻/他批词得出；`merkle-root` `merkle-tree-merkle-root` `merkleized-abstract-syntax-tree-mast`（MAST/Taproot 主题，B4 时已在 schnorr/bolt 等页链接过但本身未翻）与 `segwit2x` `bip-30` `bip-37` `bip-143` `bip-144` `bip-339` `bip-360` `bip-361` 等 BIP 属共识/协议但主题贴近软分叉部署，下一批做 B5 时**先做上面 68 条**，再决定这些是并入 B5 尾部还是顺延 B6/B7。
 - **本机环境备忘（2026-09-13 实测仍有效）**：
   - 源内容仓库在 `/Users/xw/.zcode/workspace/learnbitcoin-content`。
-  - `npm` 不在 PATH：用 `node /usr/local/lib/node_modules/npm/bin/npm-cli.js run build`；严格构建 `STRICT_LINKS=1 node /usr/local/lib/node_modules/npm/bin/npm-cli.js run build`（本会话实测通过，48s）。
-  - `tools/glossary-zh.json` 结构为每行一条 `"<slug>": {"t":"标题","s":"短定义"},`，**不要整体 JSON.stringify 重写**，小改动用 node 精准替换。
-  - slug 校验脚本 `/tmp/zhq.cjs`（重启丢失，一行重建）：`const zh = require('<repo>/tools/glossary-zh.json'); for (const s of process.argv.slice(2)) console.log(s + ' => ' + (zh[s] ? zh[s].t : 'MISSING'));`——注意字段是 `.t` 不是 `.title`。
-  - 本批 30 条中 `mt-gox-ftx-graveyard` 等深度专题链接格式为 `/rabbit-holes/<slug>`（复数），源仓库写的 `/rabbit-hole/`（单数）是错的，翻译时注意改成复数。
+  - `npm` 不在 PATH：`STRICT_LINKS=1 node /usr/local/lib/node_modules/npm/bin/npm-cli.js run build`（本会话实测通过，46s）。
+  - `tools/glossary-zh.json` 结构为每行一条 `"<slug>": {"t":"标题","s":"短定义"},`，不要整体重写；小改动用 node 精准替换。
+  - slug 校验脚本 `/tmp/zhq.cjs`（重启丢失，一行重建）：`const zh = require('<repo>/tools/glossary-zh.json'); for (const s of process.argv.slice(2)) console.log(s + ' => ' + (zh[s] ? zh[s].t : 'MISSING'));`
+  - 深度专题链接格式 `/rabbit-holes/<slug>`（复数）；源仓库写的 `/rabbit-hole/`（单数）是错的。
+  - 部署：push 到 main 后 CF Git 集成约 1 分钟自动构建上线（项目 `000-wiki-btchao-com`，域名 wiki.btchao.com / btc-wiki.pages.dev）；Git 构建失败才需 wrangler 手动兜底。
 
 ### 术语全文精翻 · 续接批次计划（新会话照此推进）
 
@@ -111,7 +112,7 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 | --- | --- | --- | --- |
 | B2 | 高频核心补齐 ✅ 2026-09-12 完成 | （固定清单）`fee-estimation` `multisig` `bip-39` `difficulty` `mempool` `fork` `whitepaper` `halving-halvening` `bech32m` `bip-173-bech32` `consensus-parameter` `satoshi-unit` | 12 |
 | B3 | 钱包与密钥安全 ✅ 2026-09-13 完成（56/56） | `seed\|mnemonic\|key\|wallet\|custod\|backup\|passphrase\|signature\|address\|cold\|multisig\|recovery\|entropy\|derivation\|xpub\|wif\|paper` | 56 |
-| B4 | 闪电网络 ⏳ 0/49（清单见上方「B4 断点」，2026-09-13 实扫枚举） | `lightning\|htlc\|channel\|bolt\|lnurl\|gossip\|onion\|preimage\|invoice\|sphinx\|autopilot\|wumbo\|penalty` | ~49 |
+| B4 | 闪电网络 ✅ 2026-09-13 完成（49/49，清单见历史） | `lightning\|htlc\|channel\|bolt\|lnurl\|gossip\|onion\|preimage\|invoice\|sphinx\|autopilot\|wumbo\|penalty` | 49 |
 | B5 | 挖矿与共识 | `mining\|miner\|hashrate\|difficulty\|proof\|consensus\|fork\|block-\|nonce\|asic\|pool\|subsidy\|halving\|retarget\|orphan\|mev` | ~68 |
 | B6 | 隐私与合规 | `coinjoin\|privacy\|mixer\|wasabi\|samourai\|tumbler\|cluster\|heuristic\|analysis\|fingerprint\|kyc\|aml\|chain-` | ~15 |
 | B7 | 字母序扫尾 | 不匹配上述关键词的其余全部剩余词条，每 50 条一批 | ~290 |
