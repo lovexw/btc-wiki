@@ -162,4 +162,4 @@ NIST 于 2024 年 8 月定稿了两项后量子签名标准。两者都在桌面
 
 把你的币移到现代地址。
 
-> 来源注记：暴露量数据基于公开的链上快照报告（2026-06-07，区块 952,694，bitcoind 28 节点每周日快照）；迁移与签名方案细节见 [BIP-360](https://github.com/bitcoin/bips/blob/master/bip-0360.mediawiki)、[BIP-361](https://github.com/bitcoin/bips/blob/master/bip-0361.mediawiki) 及 NIST [FIPS 204](https://csrc.nist.gov/pubs/fips/204/final) / [FIPS 205](https://csrc.nist.gov/pubs/fips/205/final)。
+> 来源注记：暴露量数据基于公开的链上快照报告（2026-06-07，区块 952,694，bitcoind 28 节点每周日快照）；迁移与签名方案细节见 [BIP-360](https://github.com/bitcoin/bips/blob/master/bip-0360.mediawiki) 与 [BIP-361](https://github.com/bitcoin/bips/blob/master/bip-0361.mediawiki)，后量子签名标准另见 NIST FIPS 204（ML-DSA）与 FIPS 205（SLH-DSA）规范文本。

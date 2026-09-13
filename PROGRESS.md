@@ -2,7 +2,7 @@
 
 > **给接手的 AI / 开发者：本文件是唯一可信进度源。完成任何条目后，立刻回来更新这里的 checkbox 和统计数字，并同步推送到 GitHub。** 开发规范见 [AGENTS.md](AGENTS.md)。
 >
-> 最后更新：2026-09-13（🎉 术语全文精翻 **476/476 全部完成**——B7 第六批收官 8 条（`transaction-chaining` → `zkcp-zero-knowledge-contingent-payment`）已翻译、构建通过、提交推送。术语表全文精翻任务完结；下一可选项：rabbit-holes 17 篇深度专题翻译、交互组件复刻）
+> 最后更新：2026-09-13（📈 **台账勘误**：核实发现 rabbit-holes 17 篇深度专题早在 2026-09-12 已全部翻译完成（commit `20e35a1`「深度专题 17/17 全部完成」+ `4d22c63`），但 PROGRESS.md 一直误记 0/17——两个内容 commit 当时均未同步台账。本次已逐篇对照源文件核验（标题结构、结尾完整性、外链政策），确认全部完成，台账勘误为 17/17 ✅。同时按 B7 确立的外链政策清理了 3 处 NIST csrc.nist.gov 外链（正文表述保留）。当前全部翻译任务已完成，下一可选项：交互组件复刻（7 个））
 
 ## 总览
 
@@ -10,7 +10,7 @@
 | --- | --- | --- | --- |
 | 框架（VitePress 配置/主题/首页/导览页） | — | ✅ | 完成 |
 | journey/ 学习之旅 | 6 | 6 | ✅ 全文翻译完成 |
-| rabbit-holes/ 深度专题 | 17 | 0 | ⏳ 待翻译 |
+| rabbit-holes/ 深度专题 | 17 | 17 | ✅ 全文翻译完成（2026-09-12 完成、2026-09-13 台账勘误确认） |
 | pages/ 实用页面（privacy/security/node） | 3 | 3 | ✅ 重写完成（本站语境） |
 | glossary/ 术语表（标题+短定义） | 476 | 476 | ✅ 全部完成并生成页面 |
 | glossary/ 术语表（全文精翻） | 476 | 476 | ✅ **全部完成**（B7 六批字母序扫尾收官，2026-09-13） |
@@ -59,12 +59,27 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 - [x] `be-your-own-bank` 第 5 章 · 成为自己的银行
 - [x] `sovereignty` 第 6 章 · 主权：最终的自立
 
-### rabbit-holes/ 深度专题（0/17）
+### rabbit-holes/ 深度专题（17/17 ✅ 2026-09-12 完成、2026-09-13 台账勘误确认）
 
-- [ ] `utxos`、`supply`、`halvings`、`mining`、`mempool`、`decentralization`
-- [ ] `key-space`、`seed-backup-strategies`、`mt-gox-ftx-graveyard`
-- [ ] `bitcoin-units`、`energy`、`inflation-bug-postmortem`
-- [ ] `bitcoin-privacy`、`lightning-routing`、`block-size-war`、`bip-process`、`quantum-and-bitcoin`
+- [x] `utxos` UTXO：比特币的记账模型
+- [x] `supply` 供应量：2100 万从何而来
+- [x] `halvings` 减半：四年一次的供应刹车
+- [x] `mining` 挖矿：算力、难度与激励
+- [x] `mempool` 内存池：交易候客厅
+- [x] `decentralization` 去中心化的真实含义
+- [x] `key-space` 密钥空间：天文数字的安全边际
+- [x] `seed-backup-strategies` 助记词备份策略
+- [x] `mt-gox-ftx-graveyard` 从门头沟到 FTX：托管交易所坟场
+- [x] `bitcoin-units` 比特币单位：从聪到 BTC
+- [x] `energy` 比特币与能源
+- [x] `inflation-bug-postmortem` 通胀漏洞复盘
+- [x] `bitcoin-privacy` 比特币隐私：什么有效、什么无效
+- [x] `lightning-routing` 闪电网络路由
+- [x] `block-size-war` 扩容战争
+- [x] `bip-process` BIP：比特币改进提案流程
+- [x] `quantum-and-bitcoin` 量子计算与比特币
+
+> **勘误说明（2026-09-13）**：本清单在 2026-09-12 由 commit `4d22c63`（12 篇）与 `20e35a1`（最后 4 篇）全部完成，但当时两个 commit 均未更新本台账，导致此处长期误记为 0/17。今日已逐篇核验（17 篇标题结构与源文一致或差异均为合规的组件删改处理、结尾无截断、无英文残留），并顺手清理 3 处 NIST csrc.nist.gov 外链（`quantum-and-bitcoin.md` 2 处、`glossary/slh-dsa-sphincs-plus.md` 1 处，按外链政策改为正文表述）。
 
 ### pages/ 实用页面（3/3 ✅，另有 index/manifesto/about 已重写完成）
 
@@ -79,7 +94,7 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 
 ### B7 断点（2026-09-13 🎉 **全部完成**——B7 六批 258 条字母序扫尾收官，术语全文精翻 476/476）
 
-> **术语表全文精翻任务已完结。** 下方保留批次记录备查；下一个可选任务是 rabbit-holes/ 17 篇深度专题翻译（见「翻译进度明细」）。
+> **术语表全文精翻任务已完结。** 下方保留批次记录备查。（勘误：此前此处写的下一任务「rabbit-holes 17 篇翻译」经 2026-09-13 核实其实早已完成，见「翻译进度明细」；当前剩余可选项为：交互组件复刻（7 个 Svelte→Vue）、移动端与暗色模式抽查、为 rabbit-holes 补充更多原创示意图。）
 
 - **B7 第一批（前 50 条）✅ 2026-09-13 完成**（`absolute-fee` 至 `bip-8`，全部清单见上方「已精翻」B7 段）。
 - **B7 第二批（50 条）✅ 2026-09-13 完成**（`bip-85` 至 `corrupted-chain-state`）。
@@ -121,19 +136,24 @@ npm run glossary:sidebar       # 重新生成术语侧边栏
 
 ### 原创示意图（docs/public/images/）
 
-- [x] `journey-inflation.svg` 第 1 章购买力稀释
-- [x] `journey-bitcoin-stack.svg` 第 2 章比特币技术栈分层
-- [x] `journey-block-lifecycle.svg` 第 3 章交易生命周期
-- [x] `self-custody-flow.svg` 第 5 章自我托管决策流
-- [ ] 可继续为 rabbit-holes 各篇补充
+- [x] `journey-inflation.svg` 第 1 章购买力稀释（journey/why-money-is-broken）
+- [x] `journey-network-topology.svg` 央行 vs 比特币网络拓扑（第 2 章 what-bitcoin-actually-is 与 rabbit-holes/decentralization 共用；2026-09-13 勘误：此处原误记为 `journey-bitcoin-stack.svg`，该文件从未存在）
+- [x] `journey-block-lifecycle.svg` 第 3 章交易生命周期（journey/how-bitcoin-works）
+- [x] `self-custody-flow.svg` 第 5 章自我托管决策流（journey/be-your-own-bank）
+- [x] `journey-energy-demand.svg` 能源需求对比（rabbit-holes/energy；2026-09-13 补记：此前台账漏记此图）
+- [ ] 可继续为 rabbit-holes 各篇补充（supply/halvings/mining/mempool 等篇目前无图）
+
+（2026-09-13 核验：全站引用的 5 张 SVG 与 public/images 实际文件一一对应，无缺失引用、无孤儿文件。）
 
 ## 已知问题 / 待办
 
 - [x] Cloudflare Pages 首次部署 + cleanUrls 验证 ✅ 2026-09-12 完成（wrangler 直传，cleanUrls 正常）
-- [ ] 原站 Svelte 交互组件（7 个：SupplyChart、HalvingCountdown、UnitsConverter、KeySpaceVisualizer、MempoolHistogram、DifficultyClock、UnitsVisualization）可复刻为 Vue 组件增强对应页面；frontmatter 中原引用已删除
+- [x] **台账大勘误 ✅ 2026-09-13 完成**：rabbit-holes 17 篇实际 2026-09-12 已全部翻译完成但台账误记 0/17，已逐篇核验并勘误（详见「翻译进度明细」勘误说明）；顺带清理 3 处 NIST 外链、修正示意图清单笔误。**教训已入册**：内容 commit 必须同步更新台账（会话工作流程第 4 步），避免再次出现账实分离。
+- [ ] 原站 Svelte 交互组件（7 个：SupplyChart、HalvingCountdown、UnitsConverter、KeySpaceVisualizer、MempoolHistogram、DifficultyClock、UnitsVisualization）可复刻为 Vue 组件增强对应页面；frontmatter 中原引用已删除（页面中已无组件引用，可安全开工）
 - [x] 术语全文精翻 ✅ 2026-09-13 全部完成（476/476，B2→B7 六批扫尾，`grep -rl "glossary-stub" docs/glossary/ | wc -l` = 0）
 - [ ] `pages/terms.md`（源仓库的 Terms 页）已并入 `/about` 与术语表，不再单独翻译——如需可补
 - [ ] 移动端与暗色模式抽查（已按 VitePress 默认主题设计，理论上无碍）
+- [ ] 源仓库若有新增内容（新 glossary 词条/新 rabbit-hole 篇目）需同步翻译
 
 ## 会话工作流程（每次 AI 会话必做）
 

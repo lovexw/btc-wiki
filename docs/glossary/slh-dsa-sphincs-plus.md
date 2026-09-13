@@ -6,7 +6,7 @@ title: SLH-DSA / SPHINCS+（FIPS 205）
 
 > **一句话定义：** NIST 标准化的基于哈希的后量子签名方案——ML-DSA 的保守备选：安全假设更强，但签名大得多。
 
-SLH-DSA（Stateless Hash-Based Digital Signature Algorithm，无状态基于哈希的数字签名算法）是 NIST 于 2024 年 8 月定为 [FIPS 205](https://csrc.nist.gov/pubs/fips/205/final) 的后量子签名标准。它基于 SPHINCS+——出自与 [ML-DSA](/glossary/ml-dsa-dilithium) 同一场 NIST 竞赛的基于哈希方案。在比特币的后量子讨论中，SLH-DSA 是保守备选：当格密码被认为在密码学上太新、更安全的选择是基于哈希的安全性时，选它。
+SLH-DSA（Stateless Hash-Based Digital Signature Algorithm，无状态基于哈希的数字签名算法）是 NIST 于 2024 年 8 月定为 FIPS 205 标准的后量子签名方案。它基于 SPHINCS+——出自与 [ML-DSA](/glossary/ml-dsa-dilithium) 同一场 NIST 竞赛的基于哈希方案。在比特币的后量子讨论中，SLH-DSA 是保守备选：当格密码被认为在密码学上太新、更安全的选择是基于哈希的安全性时，选它。
 
 ## 它是什么
 
