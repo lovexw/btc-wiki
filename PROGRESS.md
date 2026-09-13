@@ -16,7 +16,7 @@
 | glossary/ 术语表（全文精翻） | 476 | 81 | ⏳ 进行中，按下方批次计划推进 |
 | 原创中文示意图 | 5 | 5 | ✅ 首批完成（可继续扩充） |
 | 交互组件（原站 Svelte widget 的 Vue 复刻） | 7 | 0 | ⏳ 未开始，非必需 |
-| Cloudflare Pages 部署 | — | ✅ | 已上线 https://btc-wiki-7oo.pages.dev |
+| Cloudflare Pages 部署 | — | ✅ | 已上线 https://wiki.btchao.com（旧域名 btc-wiki-7oo.pages.dev / btc-wiki.pages.dev） |
 
 ## 构建与部署
 
@@ -28,9 +28,10 @@ npm run glossary:gen           # 重新生成未翻译的术语页（不覆盖�
 npm run glossary:sidebar       # 重新生成术语侧边栏
 ```
 
-- Cloudflare Pages：**wrangler 直传部署**（未走 Dashboard 连 GitHub）。命令：`npm run build && npx wrangler pages deploy docs/.vitepress/dist --project-name=btc-wiki --branch=main`。生产域名 https://btc-wiki-7oo.pages.dev 。
-  - wrangler 需 ≥ 4.131.1：旧版 4.38.0 上传 1500+ 文件时会大量 EPIPE 报错（已全局升级，若换机器注意）。
-  - `docs/.vitepress/dist` 里出现过 `xxx 2.svg` 之类的 Finder 垃圾副本（仅构建产物，源文件干净），部署前如发现可 `find docs/.vitepress/dist -name "* 2*" -delete`。
+- Cloudflare Pages：**Git 集成自动构建为主，wrangler 直传为兜底**。生产域名 https://wiki.btchao.com （自定义域），https://btc-wiki.pages.dev 为项目默认域（2026-09-13 实测变更，详见下条）。
+  - **2026-09-13 现状**：当前 wrangler 账号（0471666@gmail.com）的项目是 `000-wiki-btchao-com`（域名 btc-wiki.pages.dev + wiki.btchao.com），已接入 Git 集成——push 到 main 后约 1 分钟自动构建上线（commit 9a9614c 实测）；旧说明中的项目名 `btc-wiki`（btc-wiki-7oo.pages.dev）在本账号不存在，该域名内容已落后（仍是 stub），后续以 wiki.btchao.com / btc-wiki.pages.dev 为准。
+  - 手动部署命令（Git 构建失败时兜底）：`npm run build && npx wrangler pages deploy docs/.vitepress/dist --project-name=000-wiki-btchao-com --branch=main`（本机 npx/npm 不在 PATH 时用 `node /usr/local/lib/node_modules/npm/bin/npm-cli.js exec -- wrangler ...`）。
+  - Git 自动构建产出的全站 476+ 页面已抽查：journey、rabbit-holes、SVG 图片、395 个 stub 术语页全部 200 正常（2026-09-13 实测），说明构建命令（可能仍是缺 `docs` 参数的 `npx vitepress build`）已被根目录兜底配置救活。
 - cleanUrls 生成的无扩展名 URL 已在 CF Pages 上验证正常（`/glossary/private-key`、`/about` 均 308→200），无需改配置。
 - 根目录 `.vitepress/config.mts` 是 **CI 兜底配置**：若 CI 构建命令写成 `npx vitepress build`（缺 `docs` 参数），会在仓库根构建、读不到 docs 配置，public 图片被误编译为模块 import 而报错（2026-09-12 实际发生）。兜底配置复用 docs 配置并覆盖 srcDir/outDir/cacheDir，使该命令也能正确产出；不影响 `npm run build`。
 - 观察到一次 Git 自动构建失败即源于上述缺参命令，且该 Git 集成不在 wrangler CLI 登录的账号的任何 Pages 项目上（疑似另一个 Cloudflare 账号），CLI 无法代改其构建配置，故采用仓库侧兜底方案。
